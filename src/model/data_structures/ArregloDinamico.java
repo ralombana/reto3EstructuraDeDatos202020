@@ -1,5 +1,7 @@
 package model.data_structures;
 
+import com.sun.source.tree.ForLoopTree;
+
 /**
  * 2019-01-23
  * Estructura de Datos Arreglo Dinamico de Strings.
@@ -48,6 +50,16 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 		}	
 		elementos[tamanoAct] = dato;
 		tamanoAct++;
+	}
+	
+	public void InsertarElemento(T elemento, int pos)
+	{
+		T copia[] = elementos;
+		elementos[pos] = elemento;
+		for (int i = pos+1; i < tamanoAct; i++)
+		{
+			elementos[i]= copia[i-1]; 
+		}
 	}
 
 	public T eliminarElPrimero()
@@ -115,7 +127,20 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 		}
 		return rta; 
 	}
-
+	
+	public void intercambiar(int pos1, int pos2) 
+	{
+		T temporal = null;
+		elementos[pos1] = temporal;
+		elementos[pos1] = elementos[pos2];
+		elementos[pos2] = temporal; 
+	}
+	
+	public void actualizarInfo(int pos, T actualizado)
+	{
+		elementos[pos] = actualizado; 
+	}
+	
 	public T darElemento(int i) 
 	{
 		T rta = null;
