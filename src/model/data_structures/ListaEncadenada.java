@@ -28,12 +28,6 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 
 	}
 
-	@Override
-	public void insertar(T dato) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public ListaEncadenada(){
 		first = null;
 	}
