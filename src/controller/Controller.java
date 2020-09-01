@@ -33,7 +33,15 @@ public class Controller {
 			switch(option){
 				
 				case 1:
-					
+					view.printMessage("--------- \nCargar peliculas");
+				    modelo = new Modelo();
+				    modelo.cargarLista();
+				    view.printMessage("--------- \nLista de peliculas cargada");
+				    view.printMessage("--------- \nLa primera pelicula de la base de datos es: ");
+				    modelo.ImprimirPelicula(0);
+				    view.printMessage("--------- \nLa ultima pelicula de la base de datos es: ");
+				    modelo.ImprimirPelicula(modelo.darTamano()-1);
+				    view.printMessage("---------\nLa base de datos cuenta con " + modelo.darTamano() + " peliculas");						
 					break;
 				
 				case 2:
@@ -45,7 +53,7 @@ public class Controller {
 				    modelo.ImprimirPelicula(0);
 				    view.printMessage("--------- \nLa ultima pelicula de la base de datos es: ");
 				    modelo.ImprimirPelicula(modelo.darTamano()-1);
-				    view.printMessage("La base de datos cuenta con " + modelo.darTamano() + " peliculas\n---------");						
+				    view.printMessage("---------\nLa base de datos cuenta con " + modelo.darTamano() + " peliculas");						
 					break;
 
 				case 3:

@@ -57,7 +57,7 @@ public class Modelo {
 	 */
 	public void agregar(String dato)
 	{	
-		datos.insertar(dato);
+		datos.insert(dato);
 	}
 	
 	public void cargarLista() {
@@ -136,7 +136,7 @@ public class Modelo {
 			Pelicula actual = (Pelicula) datos.darElemento(i);
 			if (actual.darNombreDirector().equals(director) && actual.darVotosPromedio()>=6){
 				ImprimirPelicula(i);
-				peliculas.insertar(actual);
+				peliculas.insert(actual);
 				promedio += actual.darVotosPromedio();
 			}
 		}
@@ -152,17 +152,47 @@ public class Modelo {
 	}
 	
 	public void ShellSort() {
-		shellsort.sort(null);
+		Comparable[] peliculas = datos.elementos();
+		shellsort.sort(peliculas,datos.contarDatos());
 		for (short i=0;i<20;i++) {
-			ImprimirPelicula(i);
+			ImprimirPelicula((Pelicula)peliculas[i]);
 		}
 	}
 	
 	public void ImprimirPelicula(int index) {
 		Pelicula aImprimir = (Pelicula) datos.darElemento(index);
-		System.out.println("----------");
-		System.out.println("Nombre:"+aImprimir.darNombrePelicula());
-		System.out.println("Genero:"+aImprimir.darGenero());
-		System.out.println("Director:"+aImprimir.darNombreDirector());
+		if (aImprimir != null) {
+			System.out.println("----------");
+			System.out.println("ID:"+aImprimir.darIdentificador());
+			System.out.println("Promedio de Votacion:"+aImprimir.darVotosPromedio());
+			System.out.println("Nombre:"+aImprimir.darNombrePelicula());
+			System.out.println("Genero:"+aImprimir.darGenero());
+			System.out.println("Actores:");
+			String[] actores = aImprimir.darListaNombresActores();
+			for (int i =0;i<5;i++) {
+				System.out.println(actores[i]);
+			}
+		}
+		else {
+			System.out.println("Ocurrio un errror, revise que el indice dado sea menor al tamaño de la lista");
+		}
+	}
+	
+	public void ImprimirPelicula(Pelicula aImprimir) {
+		if (aImprimir != null) {
+			System.out.println("----------");
+			System.out.println("ID:"+aImprimir.darIdentificador());
+			System.out.println("Promedio de Votacion:"+aImprimir.darVotosPromedio());
+			System.out.println("Nombre:"+aImprimir.darNombrePelicula());
+			System.out.println("Genero:"+aImprimir.darGenero());
+			System.out.println("Actores:");
+			String[] actores = aImprimir.darListaNombresActores();
+			for (int i =0;i<5;i++) {
+				System.out.println(actores[i]);
+			}
+		}
+		else {
+			System.out.println("Ocurrio un errror, revise que el indice dado sea menor al tamaño de la lista");
+		}
 	}
 }

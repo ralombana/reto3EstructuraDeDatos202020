@@ -2,7 +2,7 @@ package model.data_structures;
 
 import model.data_structures.ListaEncadenada.Nodo;
 
-public interface IListaEncadenada<T> {
+public interface IListaEncadenada<T extends Comparable<T>> {
 	
 	int contarDatos();
 	
@@ -16,12 +16,14 @@ public interface IListaEncadenada<T> {
 	
 	T borrar(T dato);
 
-	void insertar(T dato);
+	void insert(T dato);
 	
 	T buscar(T dato);
 	
 	void agregarAlFinal(T dato);
 	
 	T darElemento(int index);
+	
+	Comparable[] elementos();
 
 }

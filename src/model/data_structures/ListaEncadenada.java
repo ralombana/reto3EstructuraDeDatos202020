@@ -2,7 +2,9 @@ package model.data_structures;
 
 public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenada<T>{
 
-	private Nodo first;
+	private Nodo first,last;
+	
+	private int tamano;
 
 	public class Nodo{
 
@@ -30,39 +32,27 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 
 	public ListaEncadenada(){
 		first = null;
+		last = null;
 	}
 
-	public Nodo darFirst()
+	public Nodo getFirst()
 	{
 		return first;
 	}
+	
+	public Nodo getLast() {
+		return last;
+	}
+	
 	public int contarDatos() {
-		if(!existeEnLaLista()) {
-			return 0;
-		}
-		Nodo actual = first;
-		int cantidad = 0;
-		boolean endHere= false;
-		while(!endHere)
-		{
-			cantidad++;
-
-			if(actual.darSiguiente() == null)
-			{
-				endHere = true;
-			}
-			else
-			{
-				actual = actual.darSiguiente();	
-			}
-		}
-		return cantidad;
-
+		return tamano;
 	}
 
 	public void insert(T dato) {
-		if(!existeEnLaLista()) {
+		if(first == null) {
 			first = new Nodo(dato);
+			last = first;
+			tamano++;
 		}
 		else {
 			Nodo actual = first;
@@ -70,6 +60,8 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 			while(!termine) {
 				if(actual.darSiguiente() == null) {
 					actual.cambiarSiguiente(new Nodo(dato));
+					last = actual.darSiguiente();
+					tamano++;
 					termine = true;
 				}
 				actual = actual.darSiguiente();
@@ -172,14 +164,30 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 
 	@Override
 	public void agregarAlFinal(T dato) {
-		// TODO Auto-generated method stub
-		
+		last.cambiarSiguiente(new Nodo(dato));
+		last = last.darSiguiente();
 	}
 
 	@Override
-	public T darElemento(int index) {
-		// TODO Auto-generated method stub
-		return null;
+	public T darElemento(int elemento) {
+		if (elemento>tamano) {
+			return null;
+		}
+		Nodo actual = first;
+		int index = 0;
+		while (index<elemento) {
+			actual = actual.darSiguiente();
+			index++;
+		}
+		return actual.darInfo();
 	}
 
+	@Override
+	public Comparable[] elementos() {
+		Comparable[] elementos = new Comparable[tamano];
+		for (int i=0;i<tamano;i++) {
+			elementos[i]=darElemento(i);
+		}
+		return elementos;
+	}
 }

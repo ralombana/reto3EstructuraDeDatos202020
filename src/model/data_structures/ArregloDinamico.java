@@ -52,6 +52,9 @@ public class ArregloDinamico<T extends Comparable<T>> implements IListaEncadenad
 		tamanoAct++;
 	}
 	
+	public Comparable[] darElementos() {
+		return elementos;
+	}
 	public void InsertarElemento(T elemento, int pos)
 	{
 		T copia[] = elementos;
@@ -164,7 +167,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements IListaEncadenad
 	}
 
 	@Override
-	public void insertar(T dato) {
+	public void insert(T dato) {
 		
 		if ( tamanoAct == tamanoMax )
 		{  // caso de arreglo lleno (aumentar tamaNo)
@@ -213,5 +216,10 @@ public class ArregloDinamico<T extends Comparable<T>> implements IListaEncadenad
 	public boolean existeEnLaLista() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public Comparable[] elementos() {
+		return elementos;
 	}
 }
