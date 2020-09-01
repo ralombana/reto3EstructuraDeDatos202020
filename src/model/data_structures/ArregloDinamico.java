@@ -9,7 +9,7 @@ import com.sun.source.tree.ForLoopTree;
  * @author Fernando De la Rosa
  *
  */
-public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamico<T>
+public class ArregloDinamico<T extends Comparable<T>> implements IListaEncadenada<T>
 {
 	/**
 	 * Capacidad maxima del arreglo
@@ -100,7 +100,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 		return tamanoMax;
 	}
 
-	public int darTamano() {
+	public int contarDatos() {
 		return tamanoAct;
 	}
 	
@@ -164,7 +164,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 	}
 
 	@Override
-	public void agregar(T dato) {
+	public void insertar(T dato) {
 		
 		if ( tamanoAct == tamanoMax )
 		{  // caso de arreglo lleno (aumentar tamaNo)
@@ -186,7 +186,7 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 	}
 
 	@Override
-	public T eliminar(T dato) {
+	public T borrar(T dato) {
 		T rta = null;
 		for (int i = 0; i < tamanoMax; i++) 
 		{
@@ -202,5 +202,16 @@ public class ArregloDinamico<T extends Comparable<T>> implements IArregloDinamic
 			}
 		}
 		return rta;
+	}
+	@Override
+	public T darPosicionDatos(int pos) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean existeEnLaLista() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

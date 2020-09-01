@@ -9,38 +9,46 @@ import java.util.List;
 import com.opencsv.bean.CsvToBeanBuilder;
 
 import clases.Pelicula;
+import clases.ShellSort;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.IArregloDinamico;
+import model.data_structures.IListaEncadenada;
+import model.data_structures.ListaEncadenada;
+import model.data_structures.ListaEncadenada.Nodo;
 
 /**
  * Definicion del modelo del mundo
  *
  */
 public class Modelo {
+	
+	private ShellSort shellsort;
+	
+	private boolean hayPeliculas;
 	/**
 	 * Atributos del modelo del mundo
 	 */
-	private IArregloDinamico datos;
+	private IListaEncadenada datos;
 	
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
 	public Modelo()
 	{
-		datos = new ArregloDinamico<Pelicula>(10);
+		hayPeliculas = false;
 	}
 	
-	public Modelo(int capacidad)
-	{
-		datos = new ArregloDinamico<Pelicula>(capacidad);
-	}
 	/**
 	 * Servicio de consulta de numero de elementos presentes en el modelo 
 	 * @return numero de elementos presentes en el modelo
 	 */
 	public int darTamano()
 	{
-		return datos.darTamano();
+		return datos.contarDatos();
+	}
+	
+	public boolean darCarga() {
+		return hayPeliculas;
 	}
 
 	/**
@@ -49,11 +57,46 @@ public class Modelo {
 	 */
 	public void agregar(String dato)
 	{	
-		datos.agregar(dato);
+		datos.insertar(dato);
 	}
 	
-	public void cargarListas()
+	public void cargarLista() {
+		datos = new ListaEncadenada();
+		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
+		String archivo2 = "./data/MoviesCastingRaw-small.csv";
+		String linea = "";
+		String linea2 = "";
+		try 
+		{
+			BufferedReader br = new BufferedReader(new FileReader(archivo));
+			br.readLine();
+			BufferedReader br2 = new BufferedReader(new FileReader(archivo2));
+			br2.readLine();
+			while((linea = br.readLine()) !=null && (linea2 = br2.readLine()) !=null)
+			{
+				String[] valores = linea.split(";");
+				String[] valores2 = linea2.split(";"); 
+				if(valores[0].equals(valores2[0]))
+				{
+					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
+					datos.insert(pelicula);
+				}
+			} 
+			hayPeliculas = true;
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void cargarArreglo()
 	{
+		datos = new ArregloDinamico(10);
 		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
 		String archivo2 = "./data/MoviesCastingRaw-small.csv";
 		String linea = "";
@@ -74,6 +117,7 @@ public class Modelo {
 					datos.agregarAlFinal(agregada);
 				}
 			} 
+			hayPeliculas = true;
 		} 
 		catch (FileNotFoundException e) 
 		{
@@ -88,22 +132,29 @@ public class Modelo {
 	public float[] buscarPeliculasBuenas(String director) {
 		int promedio = 0;
 		ArregloDinamico<Pelicula> peliculas = new ArregloDinamico<Pelicula>(10);
-		for (int i=0;i<datos.darTamano();i++) {
+		for (int i=0;i<datos.contarDatos();i++) {
 			Pelicula actual = (Pelicula) datos.darElemento(i);
 			if (actual.darNombreDirector().equals(director) && actual.darVotosPromedio()>=6){
 				ImprimirPelicula(i);
-				peliculas.agregar(actual);
+				peliculas.insertar(actual);
 				promedio += actual.darVotosPromedio();
 			}
 		}
-		if (peliculas.darTamano()!=0) {
+		if (peliculas.contarDatos()!=0) {
 			float rta[] = new float[2];
-			rta[0]=peliculas.darTamano();
+			rta[0]=peliculas.contarDatos();
 			rta[1]=promedio/rta[0];
 			return rta;
 		}
 		else {
 			return null;
+		}
+	}
+	
+	public void ShellSort() {
+		shellsort.sort(null);
+		for (short i=0;i<20;i++) {
+			ImprimirPelicula(i);
 		}
 	}
 	

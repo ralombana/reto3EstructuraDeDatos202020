@@ -1,33 +1,27 @@
 package clases;
 
-import java.awt.List;
-import java.util.ArrayList;
-
-import model.data_structures.ArregloDinamico;
-
 public class Pelicula implements Comparable<Pelicula>
 {
 	private float votosPromedio;
 	private int identificador;
 	private String nombreDirector;
 	private float cantidadVotos;
-	private ArregloDinamico<String> nombresActores;
+	private String[] actores;
 	private String genero;
 	/**
 	 * Creo que los generos no se crean aquí
 	 */
-	private String nombresGeneros[];
 	private String nombrePelicula; 
 
 	public Pelicula(int pIdentificador, String pNombre, String pGenero, String pNombreDirector, float pCantVotos, float pVotosPromedio, String actor1,String actor2,String actor3,String actor4,String actor5)
 	{
 		identificador = pIdentificador; 
-		nombresActores = new ArregloDinamico<String>(5);
-		nombresActores.agregar(actor1);
-		nombresActores.agregar(actor2);
-		nombresActores.agregar(actor3);
-		nombresActores.agregar(actor4);
-		nombresActores.agregar(actor5);
+		actores = new String[5];
+		actores[0] = actor1;
+		actores[1] = actor2;
+		actores[2] = actor3;
+		actores[3] = actor4;
+		actores[4] = actor5;
 		nombrePelicula = pNombre;
 		genero = pGenero;
 		nombreDirector = pNombreDirector;
@@ -60,15 +54,16 @@ public class Pelicula implements Comparable<Pelicula>
 		return votosPromedio;
 	}
 
-	public ArregloDinamico<String> darListaNombresActores()
+	public String[] darListaNombresActores()
 	{
-		return nombresActores;
+		return actores;
 	}
+	
 	public String darGenero() {
 		return genero;
 	}
-	@Override
+	
 	public int compareTo(Pelicula o) {
-		return identificador - o.darIdentificador();
+		return (int) (votosPromedio - o.darVotosPromedio());
 	}
 }

@@ -31,11 +31,15 @@ public class Controller {
 			view.printMenu();
 			int option = lector.nextInt();
 			switch(option){
-			
+				
 				case 1:
+					
+					break;
+				
+				case 2:
 					view.printMessage("--------- \nCargar peliculas");
 				    modelo = new Modelo();
-				    modelo.cargarListas();
+				    modelo.cargarArreglo();
 				    view.printMessage("--------- \nLista de peliculas cargada");
 				    view.printMessage("--------- \nLa primera pelicula de la base de datos es: ");
 				    modelo.ImprimirPelicula(0);
@@ -44,22 +48,16 @@ public class Controller {
 				    view.printMessage("La base de datos cuenta con " + modelo.darTamano() + " peliculas\n---------");						
 					break;
 
-				case 2:
-					view.printMessage("--------- \nIngresar nombre del director: ");
-					String nombre = lector.next();
-					view.printMessage("--------- \nIngresar apellido del director: ");
-					String apellido = lector.next();
-					float rta[] = modelo.buscarPeliculasBuenas(nombre+" "+apellido);
-					if (rta != null) {
-						view.printMessage("---------\nEl director tiene asosciadas "+(int)rta[0]+" peliculas con buena calificacion");
-						view.printMessage("---------\nEl promedio del director es de "+rta[1]);						
+				case 3:
+					if(!modelo.darCarga()) {
+						view.printMessage("No hay peliculas cargadas");
 					}
 					else {
-						view.printMessage("----------\nNo se encontro registro del director dado");
+						modelo.ShellSort();
 					}
 					break;
 					
-				case 3:
+				case 4:
 					view.printMessage("Hasta la proxima");
 					lector.close();
 					fin = true;
