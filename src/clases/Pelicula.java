@@ -66,4 +66,26 @@ public class Pelicula implements Comparable<Pelicula>
 	public int compareTo(Pelicula o) {
 		return (int) (votosPromedio - o.darVotosPromedio());
 	}
+	
+	public void ordenarActores() {
+		int salto, i;
+		String aux;
+        boolean cambios;
+  
+        for (salto = (int)actores.length / 2; salto != 0; salto /= 2) {
+            cambios = true;
+            while (cambios) {   // Mientras se intercambie algún elemento                                         
+                cambios = false;
+                for (i = salto; i < actores.length; i++)   // se da una pasada
+                {
+                    if (actores[i - salto].compareTo(actores[i])>0) {       // y si están desordenados
+                        aux = actores[i];                  // se reordenan
+                        actores[i] = actores[i - salto];
+                        actores[i - salto] = aux;
+                        cambios = true;  
+                    }
+                }
+            }
+        }
+	}
 }

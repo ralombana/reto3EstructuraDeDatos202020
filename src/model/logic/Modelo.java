@@ -114,6 +114,7 @@ public class Modelo {
 				if(valores[0].equals(valores2[0]))
 				{
 					Pelicula agregada = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
+					agregada.ordenarActores();
 					datos.agregarAlFinal(agregada);
 				}
 			} 
