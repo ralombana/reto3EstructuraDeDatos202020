@@ -35,7 +35,7 @@ public class Controller {
 				case 1:
 					view.printMessage("--------- \nCargar peliculas");
 				    modelo = new Modelo();
-				    modelo.cargarLista();
+				    modelo.cargarArreglo();
 				    view.printMessage("--------- \nLista de peliculas cargada");
 				    view.printMessage("--------- \nLa primera pelicula de la base de datos es: ");
 				    modelo.ImprimirPelicula(0);
@@ -45,30 +45,26 @@ public class Controller {
 					break;
 				
 				case 2:
-					view.printMessage("--------- \nCargar peliculas");
-				    modelo = new Modelo();
-				    modelo.cargarArreglo();
-				    view.printMessage("--------- \nLista de peliculas cargada");
-				    view.printMessage("--------- \nLa primera pelicula de la base de datos es: ");
-				    modelo.ImprimirPelicula(0);
-				    view.printMessage("--------- \nLa ultima pelicula de la base de datos es: ");
-				    modelo.ImprimirPelicula(modelo.darTamano()-1);
-				    view.printMessage("---------\nLa base de datos cuenta con " + modelo.darTamano() + " peliculas");						
+					
 					break;
-
 				case 3:
-					if(!modelo.darCarga()) {
-						view.printMessage("No hay peliculas cargadas");
-					}
-					else {
-						modelo.ShellSort();
-					}
+					
 					break;
 					
 				case 4:
-					view.printMessage("Hasta la proxima");
-					lector.close();
-					fin = true;
+					
+					break;
+				
+				case 5:
+					
+					break;
+					
+				case 6:
+					
+					break;
+					
+				case 7:
+					
 					break;
 					
 				default: 
