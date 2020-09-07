@@ -17,7 +17,7 @@ public class View
 			System.out.println("2. Nada aun");
 			System.out.println("3. Nada aun");
 			System.out.println("4. Conocer a un actor");
-			System.out.println("5. Nada aun");
+			System.out.println("5. Entender un género cinematográfico");
 			System.out.println("6. Nada aun");
 			System.out.println("7. Nada aun");
 		}

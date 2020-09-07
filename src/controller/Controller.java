@@ -66,6 +66,16 @@ public class Controller {
 					
 				
 				case 5:
+					if(!modelo.darCarga()) {
+						view.printMessage("No hay peliculas cargadas");
+					}
+					else {
+						view.printMessage("--------- \nEscriba el nombre del género que desea conocer ");
+						String nombreGenero = lector.next(); 
+						view.printMessage("El género que quieres conocer es " + nombreGenero );
+					    modelo.darPeliculasGenero(nombreGenero);	
+						break;
+					}
 					
 					break;
 					

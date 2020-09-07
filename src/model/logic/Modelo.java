@@ -197,6 +197,33 @@ public class Modelo {
 		}
 	}
 	
+	public void darPeliculasGenero(String genero)
+	{
+		ArregloDinamico<String> pelis = new ArregloDinamico<String>(1000);
+		float promedio = 0; 
+		
+		for (int i = 0; i < datos.contarDatos(); i++) 
+		{
+			Pelicula act = (Pelicula) datos.darElemento(i);
+			if(act.darGenero().equalsIgnoreCase(genero))
+			{
+				pelis.agregarAlFinal(act.darNombrePelicula());
+				promedio += act.darVotosPromedio(); 
+			}
+		}
+		promedio = promedio/pelis.contarDatos(); 
+		System.out.println("----------");
+		System.out.println("Hay " + pelis.contarDatos() + " películas de ese género");
+		if (pelis.contarDatos()>0){
+			System.out.println("Las películas de ese género son: ");
+			for(int i=0;i<pelis.contarDatos();i++) {
+				System.out.println(pelis.darElemento(i));	
+			}
+			System.out.println("----------");
+			System.out.println("El promedio de votación en esas peliculas es de " + promedio);
+		}
+	}
+	
 	public void darPeliculasActor(String pActor)
 	{
 		ArregloDinamico<String> pelis = new ArregloDinamico<String>(10);
