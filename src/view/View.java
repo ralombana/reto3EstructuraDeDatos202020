@@ -14,10 +14,12 @@ public class View
 		{
 			System.out.println("----------");
 			System.out.println("1. Cargar lista de peliculas como Lista Encadenada");
-			System.out.println("2. Cargar lista de peliculas como Arreglo");
-			System.out.println("3. Encontrar las peores peliculas");
+			System.out.println("2. Nada aun");
+			System.out.println("3. Nada aun");
 			System.out.println("4. Conocer a un actor");
-			System.out.println("5. Salir");
+			System.out.println("5. Nada aun");
+			System.out.println("6. Nada aun");
+			System.out.println("7. Nada aun");
 		}
 
 		public void printMessage(String mensaje) {

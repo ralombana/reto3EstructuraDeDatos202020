@@ -92,18 +92,14 @@ public class Pelicula implements Comparable<Pelicula>
 	
 	public boolean estaElActorEnLista(String actor)
 	{
-		boolean rta = false;
-		while(actor.compareTo(actores[0])==0 || actor.compareTo(actores[0])>0)
+		String actual = actores[0];
+		for (int i=1;actor.compareTo(actual)>=0 && i < actores.length;i++)
 		{
-			for(int i = 0; i<actores.length; i++)
-			{
-				if(actores[i].equalsIgnoreCase(actor))
-				{
-				 rta= true; 
-				 break; 
-				}
+			if (actual.compareToIgnoreCase(actor)==0) {
+				return true;
 			}
+			actual = actores[i];
 		}
-		return rta; 
+		return false; 
 	}
 }

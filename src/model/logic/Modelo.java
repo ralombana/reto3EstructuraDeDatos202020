@@ -214,7 +214,7 @@ public class Modelo {
 				directores.agregarAlFinal(act.darNombreDirector());
 				promedio+= act.darVotosPromedio(); 
 			}
-		}
+		};
 		
 		for (int i = 0; i < directores.contarDatos(); i++) 
 		{
@@ -235,9 +235,14 @@ public class Modelo {
 		
 		System.out.println("----------");
 		System.out.println("La cantidad de peliculas en las que ha actuado es de " + pelis.contarDatos());
-		System.out.println("Las películas en las que actua son " + pelis);
-		System.out.println("----------");
-		System.out.println("El promedio de votación en esas peliculas es de " + promedio);
-		System.out.println("El director con el qué se han hecho más colaboraciones es " + directorMasRepetido);
+		if (pelis.contarDatos()>0){
+			System.out.println("Las películas en las que actua son: ");
+			for(int i=0;i<pelis.contarDatos();i++) {
+				System.out.println(pelis.darElemento(i));	
+			}
+			System.out.println("----------");
+			System.out.println("El promedio de votación en esas peliculas es de " + promedio/pelis.contarDatos());
+			System.out.println("El director con el qué se han hecho más colaboraciones es " + directorMasRepetido);
+		}
 	}
 }
