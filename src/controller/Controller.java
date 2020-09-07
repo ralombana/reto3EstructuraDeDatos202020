@@ -52,8 +52,18 @@ public class Controller {
 					break;
 					
 				case 4:
+					if(!modelo.darCarga()) {
+						view.printMessage("No hay peliculas cargadas");
+					}
+					else {
+						view.printMessage("--------- \nEscriba el nombre del actor que desea conocer");
+						String nombreActor = lector.next(); 
+						String apellidoActor = lector.next(); 
+						view.printMessage("El actor que quieres conocer es " + nombreActor + " " + apellidoActor);
+					    modelo.darPeliculasActor(nombreActor + " " + apellidoActor);	
+						break;
+					}
 					
-					break;
 				
 				case 5:
 					

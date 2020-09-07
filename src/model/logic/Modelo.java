@@ -196,4 +196,48 @@ public class Modelo {
 			System.out.println("Ocurrio un errror, revise que el indice dado sea menor al tamaño de la lista");
 		}
 	}
+	
+	public void darPeliculasActor(String pActor)
+	{
+		ArregloDinamico<String> pelis = new ArregloDinamico<String>(10);
+		ArregloDinamico<String> directores = new ArregloDinamico<String>(10);
+		String directorMasRepetido = null; 
+		int numeroDirectoMasRepetido = 0; 
+		float promedio = 0; 
+		
+		for (int i = 0; i < datos.contarDatos(); i++) 
+		{
+			Pelicula act = (Pelicula) datos.darElemento(i); 
+			if(act.estaElActorEnLista(pActor)==true)
+			{
+				pelis.agregarAlFinal(act.darNombrePelicula());
+				directores.agregarAlFinal(act.darNombreDirector());
+				promedio+= act.darVotosPromedio(); 
+			}
+		}
+		
+		for (int i = 0; i < directores.contarDatos(); i++) 
+		{
+			int cantidadDeVecesRepetido = 1; 
+			for (int j = i+1; j < directores.contarDatos(); j++) 
+			{
+				if(directores.darElemento(i).equalsIgnoreCase(directores.darElemento(j)))
+				{
+					cantidadDeVecesRepetido++; 
+				}
+			}
+			if(cantidadDeVecesRepetido> numeroDirectoMasRepetido)
+			{
+				numeroDirectoMasRepetido = cantidadDeVecesRepetido;
+				directorMasRepetido = directores.darElemento(i);
+			}
+		} 
+		
+		System.out.println("----------");
+		System.out.println("La cantidad de peliculas en las que ha actuado es de " + pelis.contarDatos());
+		System.out.println("Las películas en las que actua son " + pelis);
+		System.out.println("----------");
+		System.out.println("El promedio de votación en esas peliculas es de " + promedio);
+		System.out.println("El director con el qué se han hecho más colaboraciones es " + directorMasRepetido);
+	}
 }

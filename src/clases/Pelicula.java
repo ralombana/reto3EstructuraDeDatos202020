@@ -22,6 +22,7 @@ public class Pelicula implements Comparable<Pelicula>
 		actores[2] = actor3;
 		actores[3] = actor4;
 		actores[4] = actor5;
+		ordenarActores();
 		nombrePelicula = pNombre;
 		genero = pGenero;
 		nombreDirector = pNombreDirector;
@@ -87,5 +88,22 @@ public class Pelicula implements Comparable<Pelicula>
                 }
             }
         }
+	}
+	
+	public boolean estaElActorEnLista(String actor)
+	{
+		boolean rta = false;
+		while(actor.compareTo(actores[0])==0 || actor.compareTo(actores[0])>0)
+		{
+			for(int i = 0; i<actores.length; i++)
+			{
+				if(actores[i].equalsIgnoreCase(actor))
+				{
+				 rta= true; 
+				 break; 
+				}
+			}
+		}
+		return rta; 
 	}
 }
