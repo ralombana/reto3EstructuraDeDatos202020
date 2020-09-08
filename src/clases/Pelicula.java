@@ -65,6 +65,9 @@ public class Pelicula implements Comparable<Pelicula>
 		return (int) (votosPromedio - o.darVotosPromedio());
 	}
 	
+	public int compareToCount(Pelicula o) {
+		return (int) (cantidadVotos - o.darCantidadVotos());
+	}
 	public void ordenarActores() {
 		int salto, i;
 		String aux;

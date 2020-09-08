@@ -76,24 +76,45 @@ public class Controller {
 						view.printMessage("4. Peliculas peor calificadas");
 						short ranking = lector.nextShort();
 						switch(ranking) {
+						
 							case 1:
-								
+									view.printMessage("---------\nGenerando lista de las 10 peliculas mas votadas");
+									modelo.ShellSortCount(true);
 								break;
+								
 							case 2:
+									view.printMessage("---------\nGenerando lista de las 10 peliculas menos votadas");
+									modelo.ShellSortCount(false);
+								break;
 								
-								break;
 							case 3:
-	
+									view.printMessage("---------\nGenerando lista de las 10 peliculas mejor calificadas");
+									modelo.ShellSortAverage(true);
 								break;
+								
 							case 4:
-	
+									view.printMessage("---------\nGenerando lista de las 10 peliculas peor calificadas");
+									modelo.ShellSortAverage(false);
+								break;
+								
+							default:
+									view.printMessage("--------- \n Opcion Invalida !! \n---------");
 								break;
 						}
 					}
 					break;
 
 				case 4:
-
+					if(!modelo.darCarga()) {
+						view.printMessage("No hay peliculas cargadas");
+					}
+					else {
+						view.printMessage("--------- \nEscriba el nombre del director que desea conocer");
+						String nombreDirector = lector.next(); 
+						String apellidoDirector = lector.next(); 
+						view.printMessage("El director que quieres conocer es " + nombreDirector + " " + apellidoDirector);
+						modelo.darPeliculasDirector(nombreDirector+ " " + apellidoDirector);	
+					}
 					break;
 
 				case 5:

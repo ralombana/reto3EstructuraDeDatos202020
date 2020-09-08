@@ -152,18 +152,18 @@ public class Modelo {
 		}
 	}
 	
-	public void ShellSortCount(int tipo) {
+	public void ShellSortCount(boolean tipo) {
 		Comparable[] peliculas = datos.elementos();
 		shellsort.sortCount(peliculas,datos.contarDatos(),tipo);
-		for (short i=0;i<20;i++) {
+		for (short i=0;i<10;i++) {
 			ImprimirPelicula((Pelicula)peliculas[i]);
 		}
 	}
 	
-	public void ShellSortAverage(int tipo) {
+	public void ShellSortAverage(boolean tipo) {
 		Comparable[] peliculas = datos.elementos();
 		shellsort.sortAverage(peliculas,datos.contarDatos(),tipo);
-		for (short i=0;i<20;i++) {
+		for (short i=0;i<10;i++) {
 			ImprimirPelicula((Pelicula)peliculas[i]);
 		}
 	}
@@ -173,8 +173,9 @@ public class Modelo {
 		if (aImprimir != null) {
 			System.out.println("----------");
 			System.out.println("ID:"+aImprimir.darIdentificador());
-			System.out.println("Promedio de Votacion:"+aImprimir.darVotosPromedio());
 			System.out.println("Nombre:"+aImprimir.darNombrePelicula());
+			System.out.println("Votos:"+(int)aImprimir.darCantidadVotos());
+			System.out.println("Promedio de Votacion:"+aImprimir.darVotosPromedio());
 			System.out.println("Genero:"+aImprimir.darGenero());
 			System.out.println("Actores:");
 			String[] actores = aImprimir.darListaNombresActores();
@@ -191,8 +192,9 @@ public class Modelo {
 		if (aImprimir != null) {
 			System.out.println("----------");
 			System.out.println("ID:"+aImprimir.darIdentificador());
-			System.out.println("Promedio de Votacion:"+aImprimir.darVotosPromedio());
 			System.out.println("Nombre:"+aImprimir.darNombrePelicula());
+			System.out.println("Votos:"+(int)aImprimir.darCantidadVotos());
+			System.out.println("Promedio de Votacion:"+aImprimir.darVotosPromedio());
 			System.out.println("Genero:"+aImprimir.darGenero());
 			System.out.println("Actores:");
 			String[] actores = aImprimir.darListaNombresActores();
@@ -283,6 +285,34 @@ public class Modelo {
 		else {
 			System.out.println("----------");
 			System.out.println("La persona dada no ha actuado en ninguna pelicula");
+		}
+	}
+	
+	public void darPeliculasDirector(String pDirector) {
+		ArregloDinamico<String> pelis = new ArregloDinamico<String>(10);
+		float promedio = 0; 
+		for (int i = 0; i < datos.contarDatos(); i++) 
+		{
+			Pelicula act = (Pelicula) datos.darElemento(i); 
+			if(act.darNombreDirector().compareToIgnoreCase(pDirector)==0)
+			{
+				pelis.agregarAlFinal(act.darNombrePelicula());
+				promedio+= act.darVotosPromedio(); 
+			}
+		}
+		if (pelis.contarDatos()>0){
+			System.out.println("----------");
+			System.out.println("El director ha dirigido " + pelis.contarDatos()+ " peliculas.");
+			System.out.println("Las películas que ha dirigido son: ");
+			for(int i=0;i<pelis.contarDatos();i++) {
+				System.out.println(pelis.darElemento(i));	
+			}
+			System.out.println("----------");
+			System.out.println("El promedio de votación de las peliculas en las que ha dirigido es de " + promedio/pelis.contarDatos());
+		}
+		else {
+			System.out.println("----------");
+			System.out.println("La persona dada no ha dirigido ninguna pelicula");
 		}
 	}
 }

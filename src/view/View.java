@@ -13,7 +13,7 @@ public class View
 		public void printMenu()
 		{
 			System.out.println("----------");
-			System.out.println("1. Cargar lista de peliculas como Lista Encadenada");
+			System.out.println("1. Cargar lista de peliculas");
 			System.out.println("2. Encontrar buenas peliculas");
 			System.out.println("3. Crear Ranking de peliculas");
 			System.out.println("4. Conocer a un director");
