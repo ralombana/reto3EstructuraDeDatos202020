@@ -141,7 +141,7 @@ public class Modelo {
 				promedio += actual.darVotosPromedio();
 			}
 		}
-		if (peliculas.contarDatos()!=0) {
+		if (peliculas.contarDatos()>0) {
 			float rta[] = new float[2];
 			rta[0]=peliculas.contarDatos();
 			rta[1]=promedio/rta[0];
@@ -260,16 +260,21 @@ public class Modelo {
 			}
 		} 
 		
-		System.out.println("----------");
-		System.out.println("La cantidad de peliculas en las que ha actuado es de " + pelis.contarDatos());
+		
 		if (pelis.contarDatos()>0){
+			System.out.println("----------");
+			System.out.println("La cantidad de peliculas en las que ha actuado es de " + pelis.contarDatos());
 			System.out.println("Las películas en las que actua son: ");
 			for(int i=0;i<pelis.contarDatos();i++) {
 				System.out.println(pelis.darElemento(i));	
 			}
 			System.out.println("----------");
-			System.out.println("El promedio de votación en esas peliculas es de " + promedio/pelis.contarDatos());
+			System.out.println("El promedio de votación de las peliculas en las que actua es de " + promedio/pelis.contarDatos());
 			System.out.println("El director con el qué se han hecho más colaboraciones es " + directorMasRepetido);
+		}
+		else {
+			System.out.println("----------");
+			System.out.println("La persona dada no ha actuado en ninguna pelicula");
 		}
 	}
 }
