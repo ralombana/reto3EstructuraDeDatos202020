@@ -65,7 +65,31 @@ public class Controller {
 					break;
 
 				case 3:
-
+					if(!modelo.darCarga()) {
+						view.printMessage("No hay peliculas cargadas, por favor cargar las peliculas");
+					}
+					else {
+						view.printMessage("--------- \nEscriba el tipo de ranking que desea");
+						view.printMessage("1. Peliculas mas votadas");
+						view.printMessage("2. Peliculas menos votadas");
+						view.printMessage("3. Peliculas mejor calificadas");
+						view.printMessage("4. Peliculas peor calificadas");
+						short ranking = lector.nextShort();
+						switch(ranking) {
+							case 1:
+								
+								break;
+							case 2:
+								
+								break;
+							case 3:
+	
+								break;
+							case 4:
+	
+								break;
+						}
+					}
 					break;
 
 				case 4:

@@ -152,7 +152,15 @@ public class Modelo {
 		}
 	}
 	
-	public void ShellSort() {
+	public void ShellSortCount() {
+		Comparable[] peliculas = datos.elementos();
+		shellsort.sort(peliculas,datos.contarDatos());
+		for (short i=0;i<20;i++) {
+			ImprimirPelicula((Pelicula)peliculas[i]);
+		}
+	}
+	
+	public void ShellSortAverage() {
 		Comparable[] peliculas = datos.elementos();
 		shellsort.sort(peliculas,datos.contarDatos());
 		for (short i=0;i<20;i++) {

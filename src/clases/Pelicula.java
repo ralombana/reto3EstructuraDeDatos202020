@@ -8,9 +8,6 @@ public class Pelicula implements Comparable<Pelicula>
 	private float cantidadVotos;
 	private String[] actores;
 	private String genero;
-	/**
-	 * Creo que los generos no se crean aquÃ­
-	 */
 	private String nombrePelicula; 
 
 	public Pelicula(int pIdentificador, String pNombre, String pGenero, String pNombreDirector, float pCantVotos, float pVotosPromedio, String actor1,String actor2,String actor3,String actor4,String actor5)
@@ -75,12 +72,12 @@ public class Pelicula implements Comparable<Pelicula>
   
         for (salto = (int)actores.length / 2; salto != 0; salto /= 2) {
             cambios = true;
-            while (cambios) {   // Mientras se intercambie algún elemento                                         
+            while (cambios) {                                         
                 cambios = false;
-                for (i = salto; i < actores.length; i++)   // se da una pasada
+                for (i = salto; i < actores.length; i++) 
                 {
-                    if (actores[i - salto].compareTo(actores[i])>0) {       // y si están desordenados
-                        aux = actores[i];                  // se reordenan
+                    if (actores[i - salto].compareTo(actores[i])>0) {       
+                        aux = actores[i];                  
                         actores[i] = actores[i - salto];
                         actores[i - salto] = aux;
                         cambios = true;  
