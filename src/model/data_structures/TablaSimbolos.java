@@ -4,11 +4,11 @@ import clases.Pelicula;
 
 public interface TablaSimbolos<K extends Comparable<K>, V extends Comparable<V>> 
 {
-	public void put(K llave, V Valor);
+	public void put(K llave, V valor);
 	
-	public V get(K llave);
+	public ListaEncadenada<V> get(K llave);
 	
-	public V remove(K llave);
+	public ListaEncadenada<V> remove(K llave);
 	
 	public boolean contains(K llave);
 	
