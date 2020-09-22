@@ -148,9 +148,13 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V extends Compar
 	public ListaEncadenada<K> keySet() 
 	{
 		ListaEncadenada<K> rta = new ListaEncadenada<K>();
-		for (int i = 0; i < arreglo.length; i++) 
-		{
-			//No se como retornar todas las llaves solamente, tocaría llevar un registro de ellas, porque a todas las llaves se les aplica la funcionHash y no creo que se pueda hacer la inversa a esa
+		int i = 0;
+		while (i < contador){
+			NodoHash<K, V> x = (NodoHash<K, V>) arreglo[i];
+			if(x!=null) {
+				rta.agregarAlFinal(x.getKey());
+			}
+			i++;
 		}
 		return rta;
 	}
