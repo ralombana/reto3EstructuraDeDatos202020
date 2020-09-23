@@ -204,13 +204,15 @@ public class Modelo {
 					if(key < 0) {
 						key *=(-1);
 					}
-					System.out.println(key);
 					separateChaining.put(key, new NodoHash(llave, pelicula));
 					linearProbing.put(key, new NodoHash(llave, pelicula));
 					datos.agregarAlFinal(pelicula);
 				}
 			} 
 			hayPeliculas = true;
+			//if (separateChaining.isEmpty()) {
+				//System.out.println("LISTA separateChaining VACIAAAAAAA");
+			// }
 		} 
 		catch (FileNotFoundException e) 
 		{
