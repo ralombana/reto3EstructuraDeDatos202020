@@ -1,8 +1,6 @@
 package model.data_structures;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
-import model.logic.Director;
+import clases.Director;
 
 
 public class tablaHashLinearProbing < K extends Comparable<K>, V extends Comparable<V>> implements TablaSimbolos<K, V> 
@@ -10,32 +8,26 @@ public class tablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 
 	private double factorCarga;
 
-
 	private int elementos;
-
-
 
 	private ArregloDinamico<NodoHash<K,V>> mapa;
 
-
 	private int a;
 
-
 	private int b;
-
 
 	private int c;
 
 	private int d; 
 
 
-	public tablaHashLinearProbing( int size ) 
+	public tablaHashLinearProbing(int size) 
 	{
 
 		a  = (int) (Math.random() * (c-1)+1);
 		b  = (int) (Math.random() * (c-1)+1);
-		c=0;
-		d=0;
+		c= getPrime(2*size);
+		d= getPrime(c);
 		mapa = new ArregloDinamico<NodoHash<K,V>> (d);
 	}
 
@@ -162,9 +154,9 @@ public class tablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 		return elementos;
 	}
 
-	public Lista<K> keySet() 
+	public ListaEncadenada<K> keySet() 
 	{
-		ArregloDinamico<K> result = new ArregloDinamico<K>(elementos);
+		ListaEncadenada<K> result = new ListaEncadenada<K>();
 		int i = 0;
 		while(i < d)
 		{
@@ -177,9 +169,9 @@ public class tablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 	}
 
 
-	public List<V> valueSet( )
+	public ListaEncadenada<V> valueSet( )
 	{
-		ArregloDinamico<V> rpta = new ArregloDinamico<V>(elementos);
+		ListaEncadenada<V> rpta = new ListaEncadenada<V>();
 		int i = 0;
 		while(i < d)
 		{
@@ -194,9 +186,41 @@ public class tablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 
 	public int getPos(K key)
 	{
-		int hInicial =  (a * key.hashCode( ) + b) % c;
+		int hInicial =  ((a * key.hashCode()) + b) % c;
 		int hFinal = Math.abs(hInicial) % d;
 		return hFinal;
+	}
+	
+	public static int getPrime(int x)
+	{
+		if (x<= 1)
+			return 2;
+		int numPrimo = (int) x;
+		boolean joa = false;
+		while(!joa)
+		{
+			numPrimo += 1;
+			if(primo(numPrimo))
+				joa = true;
+		}
+		return numPrimo; 
+	}
+	
+	public static boolean primo( int x)
+	{
+		if(x <= 1)
+			return false;
+		if(x <= 3)
+			return true;
+		if(x % 2 ==0 )
+			return false;
+		for(int i = 6; i < ((int) Math.sqrt(x) + 1); i+= 7)
+		{
+			if(x % i == 0 || x % (i + 2) == 0)
+				return false;
+		}
+	
+		return true;
 	}
 
 	private void verificarInvariante( )

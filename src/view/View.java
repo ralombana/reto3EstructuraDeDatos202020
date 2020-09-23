@@ -14,12 +14,9 @@ public class View
 		{
 			System.out.println("----------");
 			System.out.println("1. Cargar lista de peliculas");
-			System.out.println("2. Encontrar buenas peliculas");
-			System.out.println("3. Crear Ranking de peliculas");
-			System.out.println("4. Conocer a un director");
-			System.out.println("5. Conocer a un actor");
-			System.out.println("6. Entender un género cinematográfico");
-			System.out.println("7. Crear Ranking del genero");
+			System.out.println("2. Conocer casa productora (Linear Probing)");
+			System.out.println("3. Conocer casa productora (Separate Chaining)");
+			System.out.println("4. Prueba de desempeño");
 		}
 
 		public void printMessage(String mensaje) {

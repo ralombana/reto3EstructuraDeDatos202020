@@ -10,12 +10,15 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 import clases.Pelicula;
 import clases.ShellSort;
+import controller.Controller;
 import model.data_structures.ArregloDinamico;
 import model.data_structures.IListaEncadenada;
 import model.data_structures.ListaEncadenada;
 import model.data_structures.ListaEncadenada.Nodo;
 import model.data_structures.NodoHash;
 import model.data_structures.TablaHashSeparateChaining;
+import model.data_structures.TablaSimbolos;
+import model.data_structures.tablaHashLinearProbing;
 
 /**
  * Definicion del modelo del mundo
@@ -23,6 +26,7 @@ import model.data_structures.TablaHashSeparateChaining;
  */
 public class Modelo {
 	
+	private Controller controller;
 	private ShellSort shellsort;
 	private int tamañoLista = 70001;
 	private int tamañoSiguientePrimo = siguientePrimo(tamañoLista);
@@ -32,13 +36,15 @@ public class Modelo {
 	 * Atributos del modelo del mundo
 	 */
 	private IListaEncadenada datos;
+	private TablaSimbolos linearProbing, separateChaining;
 	
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
 	 */
-	public Modelo()
+	public Modelo(Controller pController)
 	{
 		hayPeliculas = false;
+		controller = pController;
 	}
 	
 	/**
@@ -171,9 +177,11 @@ public class Modelo {
        return rta;
     }
 	
-	public void cargarHashTableSeparateChaining() 
+	public void cargarHashTable() 
 	{
-		TablaHashSeparateChaining<Integer, NodoHash<String, Pelicula>> datos = new TablaHashSeparateChaining<Integer, NodoHash<String, Pelicula>>(tamañoLista);
+		datos = new ArregloDinamico(10);
+		separateChaining = new TablaHashSeparateChaining<Integer, NodoHash<String, Pelicula>>(tamañoLista);
+		linearProbing = new tablaHashLinearProbing<>(tamañoLista);
 		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
 		String archivo2 = "./data/MoviesCastingRaw-small.csv";
 		String linea = "";
@@ -193,7 +201,10 @@ public class Modelo {
 					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
 					String llave = (valores[8]+valores[10]);
 					int key = funcionHash(llave);
-					datos.put(key, new NodoHash(llave, pelicula));
+					System.out.println(key);
+					//separateChaining.put(key, new NodoHash(llave, pelicula));
+					linearProbing.put(key, new NodoHash(llave, pelicula));
+					datos.agregarAlFinal(pelicula);
 				}
 			} 
 			hayPeliculas = true;
@@ -205,28 +216,6 @@ public class Modelo {
 		catch (IOException e) 
 		{
 			e.printStackTrace();
-		}
-	}
-	
-	public float[] buscarPeliculasBuenas(String director) {
-		int promedio = 0;
-		ArregloDinamico<Pelicula> peliculas = new ArregloDinamico<Pelicula>(10);
-		for (int i=0;i<datos.contarDatos();i++) {
-			Pelicula actual = (Pelicula) datos.darElemento(i);
-			if (actual.darNombreDirector().equals(director) && actual.darVotosPromedio()>=6){
-				ImprimirPelicula(i);
-				peliculas.insert(actual);
-				promedio += actual.darVotosPromedio();
-			}
-		}
-		if (peliculas.contarDatos()>0) {
-			float rta[] = new float[2];
-			rta[0]=peliculas.contarDatos();
-			rta[1]=promedio/rta[0];
-			return rta;
-		}
-		else {
-			return null;
 		}
 	}
 	
@@ -247,42 +236,11 @@ public class Modelo {
 	}
 	
 	public void ImprimirPelicula(int index) {
-		Pelicula aImprimir = (Pelicula) datos.darElemento(index);
-		if (aImprimir != null) {
-			System.out.println("----------");
-			System.out.println("ID:"+aImprimir.darIdentificador());
-			System.out.println("Nombre:"+aImprimir.darNombrePelicula());
-			System.out.println("Votos:"+(int)aImprimir.darCantidadVotos());
-			System.out.println("Promedio de Votacion:"+aImprimir.darVotosPromedio());
-			System.out.println("Genero:"+aImprimir.darGenero());
-			System.out.println("Actores:");
-			String[] actores = aImprimir.darListaNombresActores();
-			for (int i =0;i<5;i++) {
-				System.out.println(actores[i]);
-			}
-		}
-		else {
-			System.out.println("Ocurrio un errror, revise que el indice dado sea menor al tamaño de la lista");
-		}
+		controller.ImprimirPelicula((Pelicula)datos.darElemento(index));
 	}
 	
 	public void ImprimirPelicula(Pelicula aImprimir) {
-		if (aImprimir != null) {
-			System.out.println("----------");
-			System.out.println("ID:"+aImprimir.darIdentificador());
-			System.out.println("Nombre:"+aImprimir.darNombrePelicula());
-			System.out.println("Votos:"+(int)aImprimir.darCantidadVotos());
-			System.out.println("Promedio de Votacion:"+aImprimir.darVotosPromedio());
-			System.out.println("Genero:"+aImprimir.darGenero());
-			System.out.println("Actores:");
-			String[] actores = aImprimir.darListaNombresActores();
-			for (int i =0;i<5;i++) {
-				System.out.println(actores[i]);
-			}
-		}
-		else {
-			System.out.println("Ocurrio un errror, revise que el indice dado sea menor al tamaño de la lista");
-		}
+		controller.ImprimirPelicula(aImprimir);
 	}
 	
 	public void darPeliculasGenero(String genero)
@@ -393,4 +351,5 @@ public class Modelo {
 			System.out.println("La persona dada no ha dirigido ninguna pelicula");
 		}
 	}
+	
 }
