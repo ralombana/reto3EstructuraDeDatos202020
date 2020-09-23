@@ -201,8 +201,11 @@ public class Modelo {
 					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
 					String llave = (valores[8]+valores[10]);
 					int key = funcionHash(llave);
+					if(key < 0) {
+						key *=(-1);
+					}
 					System.out.println(key);
-					//separateChaining.put(key, new NodoHash(llave, pelicula));
+					separateChaining.put(key, new NodoHash(llave, pelicula));
 					linearProbing.put(key, new NodoHash(llave, pelicula));
 					datos.agregarAlFinal(pelicula);
 				}
