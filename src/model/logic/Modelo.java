@@ -15,6 +15,8 @@ import model.data_structures.IArregloDinamico;
 import model.data_structures.IListaEncadenada;
 import model.data_structures.ListaEncadenada;
 import model.data_structures.ListaEncadenada.Nodo;
+import model.data_structures.NodoHash;
+import model.data_structures.TablaHashSeparateChaining;
 
 /**
  * Definicion del modelo del mundo
@@ -23,6 +25,8 @@ import model.data_structures.ListaEncadenada.Nodo;
 public class Modelo {
 	
 	private ShellSort shellsort;
+	private int tamañoLista = 70001;
+	private int tamañoSiguientePrimo = siguientePrimo(tamañoLista);
 	
 	private boolean hayPeliculas;
 	/**
@@ -116,6 +120,81 @@ public class Modelo {
 					Pelicula agregada = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
 					agregada.ordenarActores();
 					datos.agregarAlFinal(agregada);
+				}
+			} 
+			hayPeliculas = true;
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public int funcionHash(String llaveACambiar)
+	{
+		int rta = llaveACambiar.hashCode();
+		rta = ((rta*darNumeroAlAzar()+ darNumeroAlAzar())% tamañoSiguientePrimo)%tamañoLista;
+		return rta;
+	}
+	
+	public int siguientePrimo(int num) 
+	{
+		num++;
+		for (int i = 2; i < num; i++) 
+		{
+			if(num%i == 0) 
+			{
+				num++;
+				i=2;
+			} else 
+			{
+				continue;
+			}
+		}
+		return num;
+	}
+	   
+	public int darNumeroAlAzar()
+    { 
+        int max = tamañoSiguientePrimo; 
+        int min = 1; 
+        int range = max - min + 1; 
+        int rta = 0;
+  
+        for (int i = 0; i < tamañoSiguientePrimo; i++) 
+        { 
+            rta = (int)(Math.random() * range) + min; 
+        } 
+       return rta;
+    }
+	
+	public void cargarHashTableSeparateChaining() 
+	{
+		TablaHashSeparateChaining<Integer, NodoHash<String, Pelicula>> datos = new TablaHashSeparateChaining<Integer, NodoHash<String, Pelicula>>(tamañoLista);
+		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
+		String archivo2 = "./data/MoviesCastingRaw-small.csv";
+		String linea = "";
+		String linea2 = "";
+		try 
+		{
+			BufferedReader br = new BufferedReader(new FileReader(archivo));
+			br.readLine();
+			BufferedReader br2 = new BufferedReader(new FileReader(archivo2));
+			br2.readLine();
+			while((linea = br.readLine()) !=null && (linea2 = br2.readLine()) !=null)
+			{
+				String[] valores = linea.split(";");
+				String[] valores2 = linea2.split(";"); 
+				if(valores[0].equals(valores2[0]))
+				{
+					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
+					String llave = (valores[8]+valores[10]);
+					int key = funcionHash(llave);
+					datos.put(key, new NodoHash(llave, pelicula));
 				}
 			} 
 			hayPeliculas = true;
