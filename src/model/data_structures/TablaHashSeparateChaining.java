@@ -3,10 +3,12 @@ package model.data_structures;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TablaHashSeparateChaining<K extends Comparable<K>, V extends Comparable<V>> implements TablaSimbolos <K, V>
+import model.data_structures.ListaEncadenada.Nodo;
+
+public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements TablaSimbolos <K, V>
 {
 
-	public Object[] arreglo;
+	public V[] arreglo;
 	public int tamaño;
 	
 	/**
@@ -17,10 +19,10 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V extends Compar
 	public TablaHashSeparateChaining(int pTamaño) 
 	{
 		tamaño = pTamaño;
-		arreglo = new Object[tamaño];
+		arreglo = (V[])new Object[tamaño];
 		for (int i = 0; i < tamaño; i++) 
 		{
-			arreglo[i] = new ListaEncadenada<NodoHash<K,V>>();
+			arreglo[i] = null;
 		}
 	}
 	
@@ -31,44 +33,44 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V extends Compar
 	@Override
 	public void put(K llave, V valor) 
 	{
-		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) arreglo[(int) llave];
+		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
+		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
 		listaAct.agregarAlPrincipio(valor);
 	}
 	
-
 	@Override
-	public ListaEncadenada<V> get(K llave) 
+	public V get(K llave) 
 	{
-		ListaEncadenada<V> rta = null;
-		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) arreglo[(int) llave];
+		V rta = null;
+		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
+		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
 		if(listaAct.darPrimerElemento()!=null)
 		{
-			rta = listaAct;
+			rta = listaAct.darPrimerElemento();
 		}
 		return rta;
 	}
 
 	@Override
-	public ListaEncadenada<V> remove(K llave) 
+	public V remove(K llave) 
 	{
-		ListaEncadenada<V> rta = null;
-		if(this.contains(llave))
+		V rta = null;
+		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
+		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
+		if(listaAct.darPrimerElemento()!=null)
 		{
-			rta = this.get(llave);
-			ListaEncadenada<V> listaAct = (ListaEncadenada<V>) arreglo[(int) llave];
-			listaAct = new ListaEncadenada<V>();
+			rta = listaAct.darPrimerElemento();
+			listaAct.borrarPorPosicion(0); 
 		}
-		else
-		{
-		}
-		return rta; 
+		return rta;
 	}
 
 	@Override
 	public boolean contains(K llave) 
 	{
 		boolean rta = false;
-		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) arreglo[(int) llave];
+		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
+		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
 		if(listaAct.darPrimerElemento()!=null)
 		{
 			rta = true;
@@ -82,7 +84,8 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V extends Compar
 		boolean rta = true;
 		for (int i = 0; i < tamaño; i++) 
 		{
-			ListaEncadenada<V> listaAct = (ListaEncadenada<V>) arreglo[i];  
+			NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[i];
+			ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
 			if(listaAct.darPrimerElemento()!=null)
 			{
 				rta = false;
@@ -110,11 +113,10 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V extends Compar
 		ListaEncadenada<K> rta = new ListaEncadenada<K>();
 		for (int i = 0; i < tamaño; i++) 
 		{
-			ListaEncadenada<V> listaNodos = (ListaEncadenada<V>) arreglo[i]; 
-			NodoHash<K, V> x = (NodoHash<K, V>) listaNodos.darPrimerElemento();
-			if(x!=null) 
+			NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[i];
+			if(nodoAct!=null) 
 			{
-				rta.agregarAlFinal(x.getKey());
+				rta.agregarAlFinal(nodoAct.getKey());
 			}	
 		}
 		return rta;
@@ -126,17 +128,19 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V extends Compar
 		ListaEncadenada<V> rta = new ListaEncadenada<V>();
 		for (int i = 0; i < tamaño; i++) 
 		{
-			ListaEncadenada<V> listaNodos = (ListaEncadenada<V>) arreglo[i]; 
-			for (int j = 0; j < listaNodos.contarDatos(); j++) 
+			NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[i];
+			ListaEncadenada<V> listaValores = (ListaEncadenada<V>) nodoAct.getValue();
+			if(listaValores.darPrimerElemento()!=null)
 			{
-				NodoHash<K, V> x = (NodoHash<K, V>) listaNodos.darElemento(j);
-				if(x!=null) 
+				for (int j = 0; j < listaValores.contarDatos(); j++) 
 				{
-					rta.agregarAlFinal(x.getValue());
-				}	
+					rta.agregarAlPrincipio(listaValores.darElemento(i));
+				}
 			}
 		}
 		return rta;
 	}
+
+
 
 }

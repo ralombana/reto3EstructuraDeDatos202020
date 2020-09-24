@@ -2,13 +2,13 @@ package model.data_structures;
 
 import clases.Pelicula;
 
-public interface TablaSimbolos<K extends Comparable<K>, V extends Comparable<V>> 
+public interface TablaSimbolos<K extends Comparable<K>, V> 
 {
 	public void put(K llave, V valor);
 	
-	public ListaEncadenada<V> get(K llave);
+	public V get(K llave);
 	
-	public ListaEncadenada<V> remove(K llave);
+	public V remove(K llave);
 	
 	public boolean contains(K llave);
 	
@@ -18,6 +18,6 @@ public interface TablaSimbolos<K extends Comparable<K>, V extends Comparable<V>>
 	
 	public ListaEncadenada<K> keySet();
 	
-	public ListaEncadenada<V> valueSet();
+	public V[] valueSet();
 	
 }
