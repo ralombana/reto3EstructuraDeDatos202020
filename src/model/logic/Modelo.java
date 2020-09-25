@@ -210,17 +210,13 @@ public class Modelo {
 					ListaEncadenadaSinComparable<Pelicula> listaConLaPeli = new ListaEncadenadaSinComparable<Pelicula>();
 					listaConLaPeli.agregarAlPrincipio(pelicula);
 					Pelicula aImprimir = listaConLaPeli.darPrimerElemento();
-					System.out.print("La peli es: " + aImprimir.darNombrePelicula());
 					separateChaining.put(key,listaConLaPeli);
 					linearProbing.put(key, new NodoHash(llave, pelicula));
 					datos.agregarAlFinal(pelicula);
 				}
 			} 
-			
+			System.out.println("Tamaño: "+separateChaining.size());
 			hayPeliculas = true;
-			//if (separateChaining.isEmpty()) {
-				//System.out.println("LISTA separateChaining VACIAAAAAAA");
-			// }
 		} 
 		catch (FileNotFoundException e) 
 		{

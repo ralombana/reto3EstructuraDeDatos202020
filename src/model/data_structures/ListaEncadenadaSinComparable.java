@@ -95,7 +95,7 @@ public class ListaEncadenadaSinComparable<T>
 	}
 
 	public boolean existeEnLaLista() {
-		return first == null? true:false ;
+		return first == null? false:true ;
 	}
 
 	public void agregarAlPrincipio(T dato) {
