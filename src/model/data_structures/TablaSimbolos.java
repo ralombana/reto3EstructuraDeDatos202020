@@ -18,6 +18,6 @@ public interface TablaSimbolos<K extends Comparable<K>, V>
 	
 	public ListaEncadenada<K> keySet();
 	
-	public V[] valueSet();
+	public ListaEncadenadaSinComparable<V> valueSet();
 	
 }

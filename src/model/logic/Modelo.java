@@ -15,6 +15,7 @@ import model.data_structures.ArregloDinamico;
 import model.data_structures.IListaEncadenada;
 import model.data_structures.ListaEncadenada;
 import model.data_structures.ListaEncadenada.Nodo;
+import model.data_structures.ListaEncadenadaSinComparable;
 import model.data_structures.NodoHash;
 import model.data_structures.TablaHashSeparateChaining;
 import model.data_structures.TablaSimbolos;
@@ -28,7 +29,7 @@ public class Modelo {
 	
 	private Controller controller;
 	private ShellSort shellsort;
-	private int tamañoLista = 70001;
+	private int tamañoLista = 2017;
 	private int tamañoSiguientePrimo = siguientePrimo(tamañoLista);
 	
 	private boolean hayPeliculas;
@@ -141,7 +142,7 @@ public class Modelo {
 	
 	public int funcionHash(String llaveACambiar)
 	{
-		int rta = llaveACambiar.hashCode();
+		int rta = Math.abs(llaveACambiar.hashCode());
 		rta = ((rta*darNumeroAlAzar()+ darNumeroAlAzar())% tamañoSiguientePrimo)%tamañoLista;
 		return rta;
 	}
@@ -180,7 +181,7 @@ public class Modelo {
 	public void cargarHashTable() 
 	{
 		datos = new ArregloDinamico(10);
-		separateChaining = new TablaHashSeparateChaining<Integer, NodoHash<String, Pelicula>>(tamañoLista);
+		separateChaining = new TablaHashSeparateChaining<Integer, NodoHash<String, ListaEncadenadaSinComparable<Pelicula>>>(tamañoLista);
 		linearProbing = new tablaHashLinearProbing<>(tamañoLista);
 		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
 		String archivo2 = "./data/MoviesCastingRaw-small.csv";
@@ -199,16 +200,19 @@ public class Modelo {
 				if(valores[0].equals(valores2[0]))
 				{
 					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
-					String llave = (valores[8]+valores[10]);
+					String[] fechaProduccion = valores[10].split("/");
+					String añoProduccion = fechaProduccion[2];
+					String llave = (valores[8]+"," + añoProduccion);
 					int key = funcionHash(llave);
 					if(key < 0) {
 						key *=(-1);
 					}
-					separateChaining.put(key, new NodoHash(llave, pelicula));
+					separateChaining.put(key,new NodoHash(llave, pelicula));
 					linearProbing.put(key, new NodoHash(llave, pelicula));
 					datos.agregarAlFinal(pelicula);
 				}
 			} 
+			
 			hayPeliculas = true;
 			//if (separateChaining.isEmpty()) {
 				//System.out.println("LISTA separateChaining VACIAAAAAAA");

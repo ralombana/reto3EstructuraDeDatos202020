@@ -9,7 +9,7 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 {
 
 	public V[] arreglo;
-	public int tamaño;
+	public int tamaño, contador;
 	
 	/**
 	 * 
@@ -22,7 +22,7 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 		arreglo = (V[])new Object[tamaño];
 		for (int i = 0; i < tamaño; i++) 
 		{
-			arreglo[i] = null;
+			arreglo[i] = (V) new NodoHash(i, new ListaEncadenadaSinComparable<V>());
 		}
 	}
 	
@@ -34,7 +34,7 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 	public void put(K llave, V valor) 
 	{
 		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
-		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
 		listaAct.agregarAlPrincipio(valor);
 	}
 	
@@ -43,7 +43,7 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 	{
 		V rta = null;
 		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
-		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
 		if(listaAct.darPrimerElemento()!=null)
 		{
 			rta = listaAct.darPrimerElemento();
@@ -56,7 +56,7 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 	{
 		V rta = null;
 		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
-		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
 		if(listaAct.darPrimerElemento()!=null)
 		{
 			rta = listaAct.darPrimerElemento();
@@ -70,7 +70,7 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 	{
 		boolean rta = false;
 		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
-		ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
 		if(listaAct.darPrimerElemento()!=null)
 		{
 			rta = true;
@@ -85,7 +85,7 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 		for (int i = 0; i < tamaño; i++) 
 		{
 			NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[i];
-			ListaEncadenada<V> listaAct = (ListaEncadenada<V>) nodoAct.getValue();
+			ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
 			if(listaAct.darPrimerElemento()!=null)
 			{
 				rta = false;
@@ -123,14 +123,14 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 	}
 
 	@Override
-	public ListaEncadenada<V> valueSet() 
+	public ListaEncadenadaSinComparable<V> valueSet() 
 	{
-		ListaEncadenada<V> rta = new ListaEncadenada<V>();
+		ListaEncadenadaSinComparable<V> rta = new ListaEncadenadaSinComparable<V>();
 		for (int i = 0; i < tamaño; i++) 
 		{
 			NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[i];
-			ListaEncadenada<V> listaValores = (ListaEncadenada<V>) nodoAct.getValue();
-			if(listaValores.darPrimerElemento()!=null)
+			ListaEncadenadaSinComparable<V> listaValores = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
+			if(listaValores.contarDatos()!=0)
 			{
 				for (int j = 0; j < listaValores.contarDatos(); j++) 
 				{
