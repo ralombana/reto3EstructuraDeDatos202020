@@ -3,6 +3,7 @@ package model.data_structures;
 import java.util.HashMap;
 import java.util.Map;
 
+import clases.Pelicula;
 import model.data_structures.ListaEncadenada.Nodo;
 
 public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements TablaSimbolos <K, V>
@@ -19,10 +20,11 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 	public TablaHashSeparateChaining(int pTamaño) 
 	{
 		tamaño = pTamaño;
+		contador= 0; 
 		arreglo = (V[])new Object[tamaño];
 		for (int i = 0; i < tamaño; i++) 
 		{
-			arreglo[i] = (V) new NodoHash(i, new ListaEncadenadaSinComparable<V>());
+			arreglo[i] = (V) new ListaEncadenadaSinComparable<V>();
 		}
 	}
 	
@@ -33,9 +35,24 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 	@Override
 	public void put(K llave, V valor) 
 	{
-		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
-		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
-		listaAct.agregarAlPrincipio(valor);
+		ListaEncadenadaSinComparable<V> listaEntrante = (ListaEncadenadaSinComparable<V>) valor;
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[(int) llave];
+		if(listaAct.contarDatos()!=0)
+		{
+		for (int i = 0; i < arreglo.length; i++) 
+		{
+			listaEntrante.agregarAlPrincipio(listaAct.darPosicionDatos(i));
+		}
+
+		}
+		else
+		{
+			listaAct = listaEntrante; 
+			contador++;
+			Pelicula peliEntrante = (Pelicula) listaEntrante.darPrimerElemento(); 
+			System.out.print(" Se agregó la película: " + peliEntrante.darNombrePelicula());
+		}
+		
 	}
 	
 	@Override

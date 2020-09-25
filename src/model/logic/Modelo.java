@@ -181,7 +181,7 @@ public class Modelo {
 	public void cargarHashTable() 
 	{
 		datos = new ArregloDinamico(10);
-		separateChaining = new TablaHashSeparateChaining<Integer, NodoHash<String, ListaEncadenadaSinComparable<Pelicula>>>(tamañoLista);
+		separateChaining = new TablaHashSeparateChaining<Integer, ListaEncadenadaSinComparable<Pelicula>>(tamañoLista);
 		linearProbing = new tablaHashLinearProbing<>(tamañoLista);
 		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
 		String archivo2 = "./data/MoviesCastingRaw-small.csv";
@@ -207,7 +207,11 @@ public class Modelo {
 					if(key < 0) {
 						key *=(-1);
 					}
-					separateChaining.put(key,new NodoHash(llave, pelicula));
+					ListaEncadenadaSinComparable<Pelicula> listaConLaPeli = new ListaEncadenadaSinComparable<Pelicula>();
+					listaConLaPeli.agregarAlPrincipio(pelicula);
+					Pelicula aImprimir = listaConLaPeli.darPrimerElemento();
+					System.out.print("La peli es: " + aImprimir.darNombrePelicula());
+					separateChaining.put(key,listaConLaPeli);
 					linearProbing.put(key, new NodoHash(llave, pelicula));
 					datos.agregarAlFinal(pelicula);
 				}
