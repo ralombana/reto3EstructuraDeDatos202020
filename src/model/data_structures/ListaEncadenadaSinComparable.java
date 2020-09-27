@@ -7,7 +7,7 @@ public class ListaEncadenadaSinComparable<T>
 
 	private Nodo first,last;
 	
-	private int tamano;
+	private int tamano = 0;
 
 	public class Nodo{
 
@@ -48,7 +48,8 @@ public class ListaEncadenadaSinComparable<T>
 		return last;
 	}
 	
-	public int contarDatos() {
+	public int contarDatos() 
+	{
 		return tamano;
 	}
 
@@ -95,7 +96,7 @@ public class ListaEncadenadaSinComparable<T>
 	}
 
 	public boolean existeEnLaLista() {
-		return first == null? true:false ;
+		return first == null? false:true ;
 	}
 
 	public void agregarAlPrincipio(T dato) {
@@ -103,11 +104,13 @@ public class ListaEncadenadaSinComparable<T>
 		if(first==null)
 		{
 			first = nodo;
+			tamano++;
 		}
 		else
 		{
 			nodo.cambiarSiguiente(first);
 			first = nodo;
+			tamano++;
 		}
 	}
 
@@ -171,6 +174,7 @@ public class ListaEncadenadaSinComparable<T>
 	{
 		last.cambiarSiguiente(new Nodo(dato));
 		last = last.darSiguiente();
+		tamano++;
 	}
 
 

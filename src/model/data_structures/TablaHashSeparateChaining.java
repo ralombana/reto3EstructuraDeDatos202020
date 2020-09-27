@@ -37,20 +37,15 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 	{
 		ListaEncadenadaSinComparable<V> listaEntrante = (ListaEncadenadaSinComparable<V>) valor;
 		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[(int) llave];
-		if(listaAct.contarDatos()!=0)
+		if(listaAct.darPrimerElemento() !=null)
 		{
-		for (int i = 0; i < arreglo.length; i++) 
-		{
-			listaEntrante.agregarAlPrincipio(listaAct.darPosicionDatos(i));
-		}
-
+			((ListaEncadenadaSinComparable<V>) arreglo[(int) llave]).agregarAlPrincipio(listaEntrante.darPrimerElemento());
+			Pelicula peliEntrante = (Pelicula) listaEntrante.darPrimerElemento(); 
+			System.out.print("Colision, tamaño nuevo:" + ((ListaEncadenadaSinComparable<V>) arreglo[(int) llave]).contarDatos()+ "  "); 
 		}
 		else
 		{
-			listaAct = listaEntrante; 
-			contador++;
-			Pelicula peliEntrante = (Pelicula) listaEntrante.darPrimerElemento(); 
-			System.out.print(" Se agregó la película: " + peliEntrante.darNombrePelicula());
+			arreglo[(int) llave] = (V) listaEntrante; 
 		}
 		
 	}
@@ -58,36 +53,33 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 	@Override
 	public V get(K llave) 
 	{
-		V rta = null;
-		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
-		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
+		ListaEncadenadaSinComparable<V> rta = null;
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[(int) llave];
 		if(listaAct.darPrimerElemento()!=null)
 		{
-			rta = listaAct.darPrimerElemento();
+			rta = listaAct;
 		}
-		return rta;
+		return (V) rta;
 	}
 
 	@Override
 	public V remove(K llave) 
 	{
-		V rta = null;
-		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
-		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
+		ListaEncadenadaSinComparable<V> rta = null;
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[(int) llave];
 		if(listaAct.darPrimerElemento()!=null)
 		{
-			rta = listaAct.darPrimerElemento();
-			listaAct.borrarPorPosicion(0); 
+			rta = listaAct;
+			arreglo[(int) llave] = (V) new ListaEncadenadaSinComparable<V>();  
 		}
-		return rta;
+		return (V) rta;
 	}
 
 	@Override
 	public boolean contains(K llave) 
 	{
 		boolean rta = false;
-		NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[(int) llave];
-		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[(int) llave];
 		if(listaAct.darPrimerElemento()!=null)
 		{
 			rta = true;
@@ -101,8 +93,7 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 		boolean rta = true;
 		for (int i = 0; i < tamaño; i++) 
 		{
-			NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[i];
-			ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) nodoAct.getValue();
+			ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[i];
 			if(listaAct.darPrimerElemento()!=null)
 			{
 				rta = false;
@@ -130,10 +121,11 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 		ListaEncadenada<K> rta = new ListaEncadenada<K>();
 		for (int i = 0; i < tamaño; i++) 
 		{
-			NodoHash<K, V> nodoAct = (NodoHash<K, V>) arreglo[i];
-			if(nodoAct!=null) 
+			ListaEncadenadaSinComparable<V> listaAct= (ListaEncadenadaSinComparable<V>) arreglo[i];
+			if(listaAct.darPrimerElemento()!=null) 
 			{
-				rta.agregarAlFinal(nodoAct.getKey());
+				Pelicula peli = (Pelicula)listaAct.darPrimerElemento();
+				peli.darLlave();
 			}	
 		}
 		return rta;
