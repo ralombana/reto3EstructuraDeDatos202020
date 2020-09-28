@@ -105,6 +105,7 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 			nodo.cambiarSiguiente(first);
 			first = nodo;
 		}
+		tamano++;
 	}
 
 	public T borrar(T dato) {
@@ -166,6 +167,7 @@ public class ListaEncadenada<T extends Comparable<T>> implements IListaEncadenad
 	public void agregarAlFinal(T dato) {
 		last.cambiarSiguiente(new Nodo(dato));
 		last = last.darSiguiente();
+		tamano++;
 	}
 
 	@Override

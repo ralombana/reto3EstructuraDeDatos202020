@@ -34,7 +34,7 @@ public class Modelo {
 	private Hash hash;
 	private Controller controller;
 	private ShellSort shellsort;
-	private int tamañoLista;
+	private int tamañoLista = 2017;
 	private int tamañoSiguientePrimo;
 	private boolean hayPeliculas;
 	private IListaEncadenada datos;
@@ -45,11 +45,8 @@ public class Modelo {
 	 */
 	public Modelo(Controller pController)
 	{
-		hash = new Hash();
 		hayPeliculas = false;
 		controller = pController;
-		tamañoLista = 2017;
-		tamañoSiguientePrimo = hash.siguientePrimo(tamañoLista);
 	}
 	
 	/**
@@ -78,9 +75,44 @@ public class Modelo {
 		datos.insert(dato);
 	}
 	
-	/**
-	 * Funcion de cargar una base de datos de peliculas como un arreglo dinamico
-	 */
+
+	public void cargarLista() {
+		datos = new ListaEncadenada();
+		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
+		String archivo2 = "./data/MoviesCastingRaw-small.csv";
+		String linea = "";
+		String linea2 = "";
+		try 
+		{
+			BufferedReader br = new BufferedReader(new FileReader(archivo));
+			br.readLine();
+			BufferedReader br2 = new BufferedReader(new FileReader(archivo2));
+			br2.readLine();
+			while((linea = br.readLine()) !=null && (linea2 = br2.readLine()) !=null)
+			{
+				String[] valores = linea.split(";");
+				String[] valores2 = linea2.split(";"); 
+				if(valores[0].equals(valores2[0]))
+				{
+					String[] fechaProduccion = valores[10].split("/");
+					String añoProduccion = fechaProduccion[2];
+					String llave = (valores[8]+"," + añoProduccion);
+					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
+					((ListaEncadenada) datos).insert(pelicula);
+				}
+			} 
+			hayPeliculas = true;
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void cargarArreglo()
 	{
 		datos = new ArregloDinamico(10);
@@ -100,6 +132,9 @@ public class Modelo {
 				String[] valores2 = linea2.split(";"); 
 				if(valores[0].equals(valores2[0]))
 				{
+					String[] fechaProduccion = valores[10].split("/");
+					String añoProduccion = fechaProduccion[2];
+					String llave = (valores[8]+"," + añoProduccion);
 					Pelicula agregada = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
 					agregada.ordenarActores();
 					datos.agregarAlFinal(agregada);
@@ -123,7 +158,7 @@ public class Modelo {
 	public void cargarHashTable() 
 	{
 		datos = new ArregloDinamico(10);
-		separateChaining = new TablaHashSeparateChaining<Integer, ListaEncadenadaSinComparable<Pelicula>>(tamañoLista);
+		separateChaining = new TablaHashSeparateChaining<Hash, Pelicula>(tamañoLista);
 		linearProbing = new tablaHashLinearProbing<>(tamañoLista);
 		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
 		String archivo2 = "./data/MoviesCastingRaw-small.csv";
@@ -141,24 +176,34 @@ public class Modelo {
 				String[] valores2 = linea2.split(";"); 
 				if(valores[0].equals(valores2[0]))
 				{
-					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
 					String[] fechaProduccion = valores[10].split("/");
 					String añoProduccion = fechaProduccion[2];
 					String llave = (valores[8]+"," + añoProduccion);
-					int key = hash.funcionHash(llave,tamañoLista,tamañoSiguientePrimo);
-					if(key < 0) {
-						key *=(-1);
-					}
+
+					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
+					Hash key = new Hash(llave); 
 					ListaEncadenadaSinComparable<Pelicula> listaConLaPeli = new ListaEncadenadaSinComparable<Pelicula>();
 					listaConLaPeli.agregarAlPrincipio(pelicula);
-					Pelicula aImprimir = listaConLaPeli.darPrimerElemento();
-					separateChaining.put(key,listaConLaPeli);
-					linearProbing.put(key, new NodoHash(llave, pelicula));
+					
+					separateChaining.put(key,pelicula);
+
+			
 					datos.agregarAlFinal(pelicula);
 				}
 			} 
-			System.out.println("Tamaño: "+separateChaining.size());
-			hayPeliculas = true;
+			hayPeliculas = true; 
+			ListaEncadenadaSinComparable<Pelicula> listaPelis = (ListaEncadenadaSinComparable<Pelicula>) separateChaining.get(0);
+			if(listaPelis.darPrimerElemento()==null)
+			{
+				System.out.print("No hay nada en esa lista");
+			}
+			else 
+			{
+				System.out.print("La primer peli es " + listaPelis.darPrimerElemento());
+			}
+			
+			
+
 		} 
 		catch (FileNotFoundException e) 
 		{

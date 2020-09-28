@@ -1,15 +1,37 @@
 package clases;
 
-public class Hash {
+public class Hash 
+{
 	
-	public Hash() {
-		
+	String llave;
+	int posicion;
+	int tamaño = 2017;
+	int sigPrimo = siguientePrimo(tamaño);
+	
+	public Hash(String pLlave)
+	{
+		llave = pLlave;
+		posicion = funcionHash(llave, tamaño, sigPrimo);
+	}
+	
+	public String darLlave()
+	{
+		return llave;
+	}
+	
+	public int darPosicion()
+	{
+		return posicion;
 	}
 	
 	public int funcionHash(String llaveACambiar, int tamañoLista, int tamañoSiguientePrimo)
 	{
 		int rta = Math.abs(llaveACambiar.hashCode());
 		rta = ((rta*darNumeroAlAzar(tamañoSiguientePrimo)+ darNumeroAlAzar(tamañoSiguientePrimo))% tamañoSiguientePrimo)%tamañoLista;
+		if(rta <0)
+		{
+			rta*= -1;
+		}
 		return rta;
 	}
 	
