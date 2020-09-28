@@ -42,7 +42,7 @@ public class TablaHashSeparateChaining<K , V> implements TablaSimbolos <K, V>
 	public V get(K llave) 
 	{
 		V rta = null;
-		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[ ((Hash) llave).darPosicion()];
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[ new Hash((String)llave).darPosicion()];
 		if(listaAct.darPrimerElemento()!=null)
 		{
 			rta = listaAct.darPrimerElemento();

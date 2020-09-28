@@ -154,9 +154,9 @@ public class tablaHashLinearProbing < K extends Comparable<K>, V extends Compara
 		return elementos;
 	}
 
-	public ListaEncadenada<K> keySet() 
+	public ListaEncadenadaSinComparable<K> keySet() 
 	{
-		ListaEncadenada<K> result = new ListaEncadenada<K>();
+		ListaEncadenadaSinComparable<K> result = new ListaEncadenadaSinComparable<K>();
 		int i = 0;
 		while(i < d)
 		{

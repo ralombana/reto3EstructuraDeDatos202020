@@ -192,7 +192,7 @@ public class Modelo {
 				}
 			} 
 			hayPeliculas = true; 
-			ListaEncadenadaSinComparable<Pelicula> listaPelis = (ListaEncadenadaSinComparable<Pelicula>) separateChaining.get(0);
+			ListaEncadenadaSinComparable<Pelicula> listaPelis = (ListaEncadenadaSinComparable<Pelicula>) separateChaining.get("Villealfa Filmproduction Oy,1998");
 			if(listaPelis.darPrimerElemento()==null)
 			{
 				System.out.print("No hay nada en esa lista");
