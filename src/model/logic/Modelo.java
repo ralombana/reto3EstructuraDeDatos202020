@@ -209,13 +209,19 @@ public class Modelo {
 					}
 					ListaEncadenadaSinComparable<Pelicula> listaConLaPeli = new ListaEncadenadaSinComparable<Pelicula>();
 					listaConLaPeli.agregarAlPrincipio(pelicula);
+<<<<<<< HEAD
 					Pelicula aImprimir = listaConLaPeli.darPrimerElemento();
+=======
+>>>>>>> 57f585c83673093b0274876e2394288207c59285
 					separateChaining.put(key,listaConLaPeli);
 					linearProbing.put(key, new NodoHash(llave, pelicula));
 					datos.agregarAlFinal(pelicula);
 				}
 			} 
+<<<<<<< HEAD
 			System.out.println("Tamaño: "+separateChaining.size());
+=======
+>>>>>>> 57f585c83673093b0274876e2394288207c59285
 			hayPeliculas = true;
 		} 
 		catch (FileNotFoundException e) 
