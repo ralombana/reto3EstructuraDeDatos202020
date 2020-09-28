@@ -125,7 +125,6 @@ public class TablaHashSeparateChaining<K extends Comparable<K>, V> implements Ta
 			if(listaAct.darPrimerElemento()!=null) 
 			{
 				Pelicula peli = (Pelicula)listaAct.darPrimerElemento();
-				peli.darLlave();
 			}	
 		}
 		return rta;
