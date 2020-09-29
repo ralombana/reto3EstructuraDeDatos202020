@@ -42,7 +42,7 @@ public class TablaHashSeparateChaining<K , V> implements TablaSimbolos <K, V>
 	public V get(K llave) 
 	{
 		V rta = null;
-		ListaEncadenadaSinComparable<Pelicula> listaAct = (ListaEncadenadaSinComparable<Pelicula>) arreglo[((Hash) llave).darPosicion()];
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[((Hash) llave).darPosicion()];
 		if(listaAct.darPrimerElemento()!=null)
 		{
 		rta = (V) listaAct.darPrimerElemento();
@@ -53,7 +53,7 @@ public class TablaHashSeparateChaining<K , V> implements TablaSimbolos <K, V>
 	public ListaEncadenadaSinComparable<V> getLista(K llave) 
 	{
 		ListaEncadenadaSinComparable<V> rta = new  ListaEncadenadaSinComparable<V>();
-		ListaEncadenadaSinComparable<Pelicula> listaAct = (ListaEncadenadaSinComparable<Pelicula>) arreglo[((Hash) llave).darPosicion()];
+		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[((Hash) llave).darPosicion()];
 		if(listaAct.darPrimerElemento()!=null)
 		{
 		rta = (ListaEncadenadaSinComparable<V>) listaAct;
