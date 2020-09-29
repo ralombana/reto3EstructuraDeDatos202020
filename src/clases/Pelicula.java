@@ -9,8 +9,10 @@ public class Pelicula implements Comparable<Pelicula>
 	private String[] actores;
 	private String genero;
 	private String nombrePelicula; 
+	private String productora;
+	private String añoProduccion;
 
-	public Pelicula(int pIdentificador, String pNombre, String pGenero, String pNombreDirector, float pCantVotos, float pVotosPromedio, String actor1,String actor2,String actor3,String actor4,String actor5)
+	public Pelicula(int pIdentificador, String pNombre, String pGenero, String pNombreDirector, float pCantVotos, float pVotosPromedio, String actor1,String actor2,String actor3,String actor4,String actor5, String pProductora, String pAño)
 	{
 		identificador = pIdentificador; 
 		actores = new String[5];
@@ -25,6 +27,19 @@ public class Pelicula implements Comparable<Pelicula>
 		nombreDirector = pNombreDirector;
 		cantidadVotos = pCantVotos;
 		votosPromedio = pVotosPromedio;
+		productora = pProductora;
+		añoProduccion = pAño; 
+				
+	}
+	
+	public String darAño()
+	{
+		return añoProduccion;
+	}
+	
+	public String darProductora()
+	{
+		return productora;
 	}
 
 	public int darIdentificador()

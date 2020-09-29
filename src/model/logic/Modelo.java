@@ -97,7 +97,7 @@ public class Modelo {
 					String[] fechaProduccion = valores[10].split("/");
 					String añoProduccion = fechaProduccion[2];
 					String llave = (valores[8]+"," + añoProduccion);
-					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
+					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9], valores[8], añoProduccion);
 					((ListaEncadenada) datos).insert(pelicula);
 				}
 			} 
@@ -135,7 +135,7 @@ public class Modelo {
 					String[] fechaProduccion = valores[10].split("/");
 					String añoProduccion = fechaProduccion[2];
 					String llave = (valores[8]+"," + añoProduccion);
-					Pelicula agregada = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
+					Pelicula agregada = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9], valores[8], añoProduccion);
 					agregada.ordenarActores();
 					datos.agregarAlFinal(agregada);
 				}
@@ -180,29 +180,26 @@ public class Modelo {
 					String añoProduccion = fechaProduccion[2];
 					String llave = (valores[8]+"," + añoProduccion);
 
-					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9]);
+					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9],valores[8],añoProduccion);
 					Hash key = new Hash(llave); 
 					ListaEncadenadaSinComparable<Pelicula> listaConLaPeli = new ListaEncadenadaSinComparable<Pelicula>();
 					listaConLaPeli.agregarAlPrincipio(pelicula);
 					
 					separateChaining.put(key,pelicula);
-
 			
 					datos.agregarAlFinal(pelicula);
 				}
 			} 
+			
 			hayPeliculas = true; 
-			ListaEncadenadaSinComparable<Pelicula> listaPelis = (ListaEncadenadaSinComparable<Pelicula>) separateChaining.get("Villealfa Filmproduction Oy,1998");
-			if(listaPelis.darPrimerElemento()==null)
-			{
-				System.out.print("No hay nada en esa lista");
-			}
-			else 
-			{
-				System.out.print("La primer peli es " + listaPelis.darPrimerElemento());
-			}
 			
-			
+			ListaEncadenadaSinComparable<Hash> listaHash = new ListaEncadenadaSinComparable<Hash>();
+			listaHash = separateChaining.keySet();
+			for (int i = 0; i < listaHash.contarDatos(); i++) 
+			{
+				Hash act = listaHash.darElemento(i); 
+				System.out.print("|| La llave en pos " + i + " es la llave: "  + act.darLlave());
+			}
 
 		} 
 		catch (FileNotFoundException e) 

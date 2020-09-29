@@ -29,25 +29,36 @@ public class TablaHashSeparateChaining<K , V> implements TablaSimbolos <K, V>
 		}
 	}
 	
+	
 	@Override
 	public void put(K llave, V valor) 
 	{
 		Hash pLlave = (Hash) llave;
 		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[pLlave.darPosicion()];
 		((ListaEncadenadaSinComparable<V>) arreglo[pLlave.darPosicion()]).agregarAlPrincipio((V) valor); 
-		
 	}
 	
 	@Override
 	public V get(K llave) 
 	{
 		V rta = null;
-		ListaEncadenadaSinComparable<V> listaAct = (ListaEncadenadaSinComparable<V>) arreglo[ new Hash((String)llave).darPosicion()];
+		ListaEncadenadaSinComparable<Pelicula> listaAct = (ListaEncadenadaSinComparable<Pelicula>) arreglo[((Hash) llave).darPosicion()];
 		if(listaAct.darPrimerElemento()!=null)
 		{
-			rta = listaAct.darPrimerElemento();
+		rta = (V) listaAct.darPrimerElemento();
 		}
-		return (V) rta;
+		return rta;
+	}
+	
+	public ListaEncadenadaSinComparable<V> getLista(K llave) 
+	{
+		ListaEncadenadaSinComparable<V> rta = new  ListaEncadenadaSinComparable<V>();
+		ListaEncadenadaSinComparable<Pelicula> listaAct = (ListaEncadenadaSinComparable<Pelicula>) arreglo[((Hash) llave).darPosicion()];
+		if(listaAct.darPrimerElemento()!=null)
+		{
+		rta = (ListaEncadenadaSinComparable<V>) listaAct;
+		}
+		return rta;
 	}
 
 	@Override
@@ -109,14 +120,20 @@ public class TablaHashSeparateChaining<K , V> implements TablaSimbolos <K, V>
 		ListaEncadenadaSinComparable<K> rta = new ListaEncadenadaSinComparable<K>();
 		for (int i = 0; i < tamaño; i++) 
 		{
-			if(((ListaEncadenadaSinComparable<V>) arreglo[i]).darPrimerElemento()!=null)
+			if(((ListaEncadenadaSinComparable<K>) arreglo[i]).darPrimerElemento()!=null)
 			{
-				Pelicula act = (Pelicula) ((ListaEncadenadaSinComparable<V>) arreglo[i]).darPrimerElemento();
-				
+				for (int j = 0; j < ((ListaEncadenadaSinComparable<K>) arreglo[i]).contarDatos(); j++) 
+				{
+					Pelicula act = (Pelicula) ((ListaEncadenadaSinComparable<K>) arreglo[i]).darElemento(j);
+					String productora = act.darProductora();
+					String año = act.darAño();
+					String llave = productora + "," + año; 
+					Hash key = new Hash(llave);
+					rta.agregarAlPrincipio((K) key);
+				}
 			}
-				
-			}	
-		return rta;
+		}
+		return rta; 
 	}
 		
 	
