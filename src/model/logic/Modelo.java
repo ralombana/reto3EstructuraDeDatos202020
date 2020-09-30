@@ -35,10 +35,11 @@ public class Modelo {
 	private Controller controller;
 	private ShellSort shellsort;
 	private int tamañoLista = 2017;
+	private int tamañoListaActores = 400009;
 	private int tamañoSiguientePrimo;
 	private boolean hayPeliculas;
 	private IListaEncadenada datos;
-	private TablaSimbolos linearProbing, separateChaining;
+	private TablaSimbolos linearProbing, separateChaining, separateChainingActores;
 	
 	/**
 	 * Constructor del modelo del mundo con capacidad predefinida
@@ -181,7 +182,7 @@ public class Modelo {
 					String llave = (valores[8]+"," + añoProduccion);
 
 					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9],valores[8],añoProduccion);
-					Hash key = new Hash(llave); 
+					Hash key = new Hash(llave, tamañoLista); 
 					ListaEncadenadaSinComparable<Pelicula> listaConLaPeli = new ListaEncadenadaSinComparable<Pelicula>();
 					listaConLaPeli.agregarAlPrincipio(pelicula);
 					
@@ -200,6 +201,66 @@ public class Modelo {
 				Hash act = listaHash.darElemento(i); 
 				System.out.print("|| La llave en pos " + i + " es la llave: "  + act.darLlave());
 			}
+
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void cargarHashTableActores() 
+	{
+		separateChainingActores = new TablaHashSeparateChaining<Hash, Pelicula>(tamañoListaActores);
+		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
+		String archivo2 = "./data/MoviesCastingRaw-small.csv";
+		String linea = "";
+		String linea2 = "";
+		try 
+		{
+			BufferedReader br = new BufferedReader(new FileReader(archivo));
+			br.readLine();
+			BufferedReader br2 = new BufferedReader(new FileReader(archivo2));
+			br2.readLine();
+			while((linea = br.readLine()) !=null && (linea2 = br2.readLine()) !=null)
+			{
+				String[] valores = linea.split(";");
+				String[] valores2 = linea2.split(";"); 
+				if(valores[0].equals(valores2[0]))
+				{
+					String[] fechaProduccion = valores[10].split("/");
+					String añoProduccion = fechaProduccion[2];
+					String llave1 = (valores2[1]);
+					String llave2 = (valores2[3]);
+					String llave3 = (valores2[5]);
+					String llave4 = (valores2[7]);
+					String llave5 = (valores2[9]);
+					
+					Pelicula pelicula = new Pelicula((Integer.parseInt(valores[0])), ((String)valores[5]), valores[2], valores2[12], Float.parseFloat(valores[18]), Float.parseFloat(valores[17]),valores2[1],valores2[3],valores2[5],valores2[7],valores2[9],valores[8],añoProduccion);
+					Hash key1 = new Hash(llave1, tamañoListaActores); 
+					Hash key2 = new Hash(llave2, tamañoListaActores); 
+					Hash key3 = new Hash(llave3, tamañoListaActores); 
+					Hash key4 = new Hash(llave4, tamañoListaActores); 
+					Hash key5 = new Hash(llave5, tamañoListaActores); 
+					
+					ListaEncadenadaSinComparable<Pelicula> listaConLaPeli = new ListaEncadenadaSinComparable<Pelicula>();
+					listaConLaPeli.agregarAlPrincipio(pelicula);
+					
+					separateChainingActores.put(key1, pelicula);
+					separateChainingActores.put(key2, pelicula);
+					separateChainingActores.put(key3, pelicula);
+					separateChainingActores.put(key4, pelicula);
+					separateChainingActores.put(key5, pelicula);
+					
+					System.out.print(" || "+ llave1 + " || ");
+				}
+			} 
+			
+			hayPeliculas = true; 
 
 		} 
 		catch (FileNotFoundException e) 
@@ -242,6 +303,62 @@ public class Modelo {
 	
 	public void ImprimirPelicula(Pelicula aImprimir) {
 		controller.ImprimirPelicula(aImprimir);
+	}
+	
+	public void darPeliculasActorHash(String pActor)
+	{
+		ArregloDinamico<String> pelis = new ArregloDinamico<String>(10);
+		ArregloDinamico<String> directores = new ArregloDinamico<String>(10);
+		String directorMasRepetido = null; 
+		int numeroDirectoMasRepetido = 0; 
+		float promedio = 0; 
+		
+		Hash actor = new Hash(pActor, tamañoListaActores);
+		ListaEncadenadaSinComparable<Pelicula> listaPelisActor = ((TablaHashSeparateChaining<Hash, Pelicula>) separateChaining).getLista(actor);
+		
+		for (int i = 0; i < listaPelisActor.contarDatos(); i++) 
+		{
+			Pelicula act = (Pelicula) listaPelisActor.darElemento(i); 
+			if(act.estaElActorEnLista(pActor)==true)
+			{
+				pelis.agregarAlFinal(act.darNombrePelicula());
+				directores.agregarAlFinal(act.darNombreDirector());
+				promedio+= act.darVotosPromedio(); 
+			}
+		}
+		
+		for (int i = 0; i < directores.contarDatos(); i++) 
+		{
+			int cantidadDeVecesRepetido = 1; 
+			for (int j = i+1; j < directores.contarDatos(); j++) 
+			{
+				if(directores.darElemento(i).equalsIgnoreCase(directores.darElemento(j)))
+				{
+					cantidadDeVecesRepetido++; 
+				}
+			}
+			if(cantidadDeVecesRepetido> numeroDirectoMasRepetido)
+			{
+				numeroDirectoMasRepetido = cantidadDeVecesRepetido;
+				directorMasRepetido = directores.darElemento(i);
+			}
+		} 
+		
+		if (pelis.contarDatos()>0){
+			System.out.println("----------");
+			System.out.println("La cantidad de peliculas en las que ha actuado es de " + pelis.contarDatos());
+			System.out.println("Las películas en las que actua son: ");
+			for(int i=0;i<pelis.contarDatos();i++) {
+				System.out.println(pelis.darElemento(i));	
+			}
+			System.out.println("----------");
+			System.out.println("El promedio de votación de las peliculas en las que actua es de " + promedio/pelis.contarDatos());
+			System.out.println("El director con el qué se han hecho más colaboraciones es " + directorMasRepetido);
+		}
+		else {
+			System.out.println("----------");
+			System.out.println("La persona dada no ha actuado en ninguna pelicula");
+		}
 	}
 	
 	public void darPeliculasGenero(String genero)

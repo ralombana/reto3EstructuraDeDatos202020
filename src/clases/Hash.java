@@ -5,12 +5,13 @@ public class Hash
 	
 	String llave;
 	int posicion;
-	int tamaño = 2017;
+	int tamaño = 0;
 	int sigPrimo = siguientePrimo(tamaño);
 	
-	public Hash(String pLlave)
+	public Hash(String pLlave, int pTamaño)
 	{
 		llave = pLlave;
+		tamaño = pTamaño; 
 		posicion = funcionHash(llave, tamaño, sigPrimo);
 	}
 	

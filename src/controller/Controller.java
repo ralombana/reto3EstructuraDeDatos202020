@@ -50,8 +50,10 @@ public class Controller {
 					if(!modelo.darCarga()) {
 						view.printMessage("No hay peliculas cargadas, por favor cargar las peliculas");
 					}
-					else {
-						
+					else 
+					{
+						view.printMessage("--------- \n Cargando Actores");
+						modelo.cargarHashTableActores();
 					}
 					break;
 
@@ -59,8 +61,15 @@ public class Controller {
 					if(!modelo.darCarga()) {
 						view.printMessage("No hay peliculas cargadas, por favor cargar las peliculas");
 					}
-					else {
-						
+					else 
+					{
+						modelo.cargarHashTableActores();
+						view.printMessage("--------- \nSe cargo la lista en formato actores");
+						view.printMessage("--------- \nEscriba el nombre del actor que desea conocer");
+						String nombreActor = lector.next(); 
+						String apellidoActor = lector.next(); 
+						view.printMessage("El actor que quieres conocer es " + nombreActor + " " + apellidoActor);
+						modelo.darPeliculasActorHash(nombreActor + " " + apellidoActor);
 					}
 					break;
 
