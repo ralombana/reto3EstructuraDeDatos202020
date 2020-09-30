@@ -470,4 +470,26 @@ public class Modelo {
 		}
 	}
 	
+	
+	public boolean conocerPeliculasPais(String nombrePais){
+		
+		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
+		String archivo2 = "./data/MoviesCastingRaw-small.csv";
+	    int paisProduccion = 9; 
+		System.out.println("Buscando peliculas de " + nombrePais);
+		boolean rta = false;
+		cargarHashTable(archivo, archivo2, paisProduccion, false, false);
+		Nodo nodoPelis = TablaHashSeparateChaining.getNodo(nombrePais);
+		while(nodoPelis!=null) {
+			if(nodoPelis.darInfo().equals(nombrePais)) {
+				System.out.println("");
+				((Pelicula) nodoPelis.darInfo()).darNombrePelicula();
+				rta= true;
+			}
+			nodoPelis = nodoPelis.darSiguiente();
+		}
+		
+	}
+	
+	
 }
