@@ -118,4 +118,19 @@ public class Pelicula implements Comparable<Pelicula>
 		return false; 
 	}
 	
+	public boolean esDelGenero(String pGenero)
+	{
+		if(genero.toLowerCase().contains(pGenero.toLowerCase())) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean esDeProductora(String pProductora)
+	{
+		if(productora.toLowerCase().contains(pProductora.toLowerCase())) {
+			return true;
+		}
+		return false;
+	}
 }

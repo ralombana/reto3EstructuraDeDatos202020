@@ -38,42 +38,43 @@ public class Controller {
 					view.printMessage("--------- \nCargar peliculas");
 					modelo = new Modelo(this);
 					modelo.cargarHashTable();
-					view.printMessage("--------- \nLista de peliculas cargada");
-					view.printMessage("--------- \nLa primera pelicula de la base de datos es: ");
-					modelo.ImprimirPelicula(0);
-					view.printMessage("--------- \nLa ultima pelicula de la base de datos es: ");
-					modelo.ImprimirPelicula(modelo.darTamano()-1);
-					view.printMessage("---------\nLa base de datos cuenta con " + modelo.darTamano() + " peliculas");						
+					view.printMessage("--------- \nLista de peliculas cargada");					
 					break;
 
 				case 2:
-					if(!modelo.darCarga()) {
-						view.printMessage("No hay peliculas cargadas, por favor cargar las peliculas");
-					}
-					else 
-					{
-						view.printMessage("--------- \n Cargando Actores");
-						modelo.cargarHashTableActores();
-					}
+					modelo.cargarHashTable();
+					view.printMessage("--------- \nSe cargo la lista en formato Productoras");
+					view.printMessage("--------- \nEscriba el nombre de la casa productora que desea conocer");
+					lector.nextLine();
+					String pCasaProductora = lector.nextLine(); 
+					view.printMessage("La casa productora que desea conocer es "+pCasaProductora);
+					modelo.darPeliculasCasaProductora(pCasaProductora);
 					break;
 
 				case 3:
-					if(!modelo.darCarga()) {
-						view.printMessage("No hay peliculas cargadas, por favor cargar las peliculas");
-					}
-					else 
-					{
-						modelo.cargarHashTableActores();
-						view.printMessage("--------- \nSe cargo la lista en formato actores");
-						view.printMessage("--------- \nEscriba el nombre del actor que desea conocer");
-						String nombreActor = lector.next(); 
-						String apellidoActor = lector.next(); 
-						view.printMessage("El actor que quieres conocer es " + nombreActor + " " + apellidoActor);
-						modelo.darPeliculasActorHash(nombreActor + " " + apellidoActor);
-					}
+
 					break;
 
 				case 4:
+					modelo.cargarHashTableActores();
+					view.printMessage("--------- \nSe cargo la lista en formato actores");
+					view.printMessage("--------- \nEscriba el nombre del actor que desea conocer");
+					lector.nextLine();
+					String nombreActor = lector.nextLine(); 
+					view.printMessage("El actor que quieres conocer es " + nombreActor );
+					modelo.darPeliculasActorHash(nombreActor);
+					break;
+				
+				case 5:
+					modelo.cargarHashTable();
+					view.printMessage("--------- \nSe cargo la lista en orden de lectura");
+					view.printMessage("--------- \nEscriba el genero que desea conocer");
+					String pGenero = lector.next(); 
+					view.printMessage("El genero que quieres conocer es "+pGenero);
+					modelo.darPeliculasGenero(pGenero);
+					break;
+					
+				case 6:
 					if(!modelo.darCarga()) {
 						view.printMessage("No hay peliculas cargadas");
 					}
@@ -112,5 +113,9 @@ public class Controller {
 		else {
 			view.printMessage("Ocurrio un errror, revise que el indice dado sea menor al tamaño de la lista");
 		}
+	}
+	
+	public void printMessage(String mensaje) {
+		view.printMessage(mensaje);
 	}
 }

@@ -158,7 +158,6 @@ public class Modelo {
 	 */
 	public void cargarHashTable() 
 	{
-		datos = new ArregloDinamico(10);
 		separateChaining = new TablaHashSeparateChaining<Hash, Pelicula>(tamañoLista);
 		linearProbing = new tablaHashLinearProbing<>(tamañoLista);
 		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
@@ -187,8 +186,6 @@ public class Modelo {
 					listaConLaPeli.agregarAlPrincipio(pelicula);
 					
 					separateChaining.put(key,pelicula);
-			
-					datos.agregarAlFinal(pelicula);
 				}
 			} 
 			
@@ -272,7 +269,7 @@ public class Modelo {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Esta funcion ordena por conteo las peliculas
 	 * @param tipo Tipo de ordenamiento, true para las peliculas mas votadas, false para las menos votadas
@@ -315,7 +312,7 @@ public class Modelo {
 		
 		Hash actor = new Hash(pActor, tamañoListaActores);
 		ListaEncadenadaSinComparable<Pelicula> listaPelisActor = ((TablaHashSeparateChaining<Hash, Pelicula>) separateChaining).getLista(actor);
-		
+		controller.printMessage(""+listaPelisActor.contarDatos());
 		for (int i = 0; i < listaPelisActor.contarDatos(); i++) 
 		{
 			Pelicula act = (Pelicula) listaPelisActor.darElemento(i); 
@@ -345,46 +342,83 @@ public class Modelo {
 		} 
 		
 		if (pelis.contarDatos()>0){
-			System.out.println("----------");
-			System.out.println("La cantidad de peliculas en las que ha actuado es de " + pelis.contarDatos());
-			System.out.println("Las películas en las que actua son: ");
+			controller.printMessage("----------");
+			controller.printMessage("La cantidad de peliculas en las que ha actuado es de " + pelis.contarDatos());
+			controller.printMessage("Las películas en las que actua son: ");
 			for(int i=0;i<pelis.contarDatos();i++) {
-				System.out.println(pelis.darElemento(i));	
+				controller.printMessage(pelis.darElemento(i));	
 			}
-			System.out.println("----------");
-			System.out.println("El promedio de votación de las peliculas en las que actua es de " + promedio/pelis.contarDatos());
-			System.out.println("El director con el qué se han hecho más colaboraciones es " + directorMasRepetido);
+			controller.printMessage("----------");
+			controller.printMessage("El promedio de votación de las peliculas en las que actua es de " + promedio/pelis.contarDatos());
+			controller.printMessage("El director con el qué se han hecho más colaboraciones es " + directorMasRepetido);
 		}
 		else {
-			System.out.println("----------");
-			System.out.println("La persona dada no ha actuado en ninguna pelicula");
+			controller.printMessage("----------");
+			controller.printMessage("La persona dada no ha actuado en ninguna pelicula");
 		}
 	}
 	
-	public void darPeliculasGenero(String genero)
+	public void darPeliculasGenero(String pGenero)
 	{
-		ArregloDinamico<String> pelis = new ArregloDinamico<String>(1000);
+		ArregloDinamico<String> pelis = new ArregloDinamico<String>(10); 
 		float promedio = 0; 
 		
-		for (int i = 0; i < datos.contarDatos(); i++) 
+		Hash genero = new Hash(pGenero, tamañoListaActores);
+		ListaEncadenadaSinComparable<Pelicula> listaPelisActor = ((TablaHashSeparateChaining<Hash, Pelicula>) separateChaining).getLista(genero);
+		
+		for (int i = 0; i < listaPelisActor.contarDatos(); i++) 
 		{
-			Pelicula act = (Pelicula) datos.darElemento(i);
-			if(act.darGenero().equalsIgnoreCase(genero))
+			Pelicula act = (Pelicula) listaPelisActor.darElemento(i); 
+			if(act.esDelGenero(pGenero))
 			{
 				pelis.agregarAlFinal(act.darNombrePelicula());
-				promedio += act.darVotosPromedio(); 
+				promedio+= act.darVotosPromedio(); 
 			}
 		}
-		promedio = promedio/pelis.contarDatos(); 
-		System.out.println("----------");
-		System.out.println("Hay " + pelis.contarDatos() + " películas de ese género");
+		
+		
 		if (pelis.contarDatos()>0){
-			System.out.println("Las películas de ese género son: ");
+			controller.printMessage("----------\nLas peliculas son: ");
 			for(int i=0;i<pelis.contarDatos();i++) {
-				System.out.println(pelis.darElemento(i));	
+				controller.printMessage(pelis.darElemento(i));	
 			}
-			System.out.println("----------");
-			System.out.println("El promedio de votación en esas peliculas es de " + promedio);
+			controller.printMessage("----------\nLa cantidad de peliculas del genero dado que se encontraron es de " + pelis.contarDatos());
+			controller.printMessage("----------\nEl promedio de votación de las peliculas en las que actua es de " + promedio/pelis.contarDatos());
+		}
+		else {
+			controller.printMessage("----------");
+			controller.printMessage("No hay peliculas del genero dado");
+		}
+	}
+	
+	public void darPeliculasCasaProductora(String pCasaProductora)
+	{
+		ArregloDinamico<String> pelis = new ArregloDinamico<String>(10); 
+		float promedio = 0; 
+		
+		Hash casaProductora = new Hash(pCasaProductora, tamañoListaActores);
+		ListaEncadenadaSinComparable<Pelicula> listaPelisActor = ((TablaHashSeparateChaining<Hash, Pelicula>) separateChaining).getLista(casaProductora);
+		for (int i = 0; i < listaPelisActor.contarDatos(); i++) 
+		{
+			Pelicula act = (Pelicula) listaPelisActor.darElemento(i); 
+			if(act.esDeProductora(pCasaProductora))
+			{
+				pelis.agregarAlFinal(act.darNombrePelicula());
+				promedio+= act.darVotosPromedio(); 
+			}
+		}
+		
+		if (pelis.contarDatos()>0){
+			controller.printMessage("----------\nLas peliculas son: ");
+			for(int i=0;i<pelis.contarDatos();i++) {
+				controller.printMessage("\n"+pelis.darElemento(i));	
+			}
+			controller.printMessage("----------\nLa cantidad de peliculas de la productora dada que se encontraron es de " + pelis.contarDatos());
+			controller.printMessage("----------\nEl promedio de votación de las peliculas producidas por "+pCasaProductora+" es de " + promedio/pelis.contarDatos());
+		}
+		else {
+			controller.printMessage("----------");
+			controller.printMessage("No hay peliculas producidas por la casa productora dada");
 		}
 	}
 	
@@ -426,19 +460,19 @@ public class Modelo {
 		
 		
 		if (pelis.contarDatos()>0){
-			System.out.println("----------");
-			System.out.println("La cantidad de peliculas en las que ha actuado es de " + pelis.contarDatos());
-			System.out.println("Las películas en las que actua son: ");
+			controller.printMessage("----------");
+			controller.printMessage("La cantidad de peliculas en las que ha actuado es de " + pelis.contarDatos());
+			controller.printMessage("Las películas en las que actua son: ");
 			for(int i=0;i<pelis.contarDatos();i++) {
-				System.out.println(pelis.darElemento(i));	
+				controller.printMessage(pelis.darElemento(i));
 			}
-			System.out.println("----------");
-			System.out.println("El promedio de votación de las peliculas en las que actua es de " + promedio/pelis.contarDatos());
-			System.out.println("El director con el qué se han hecho más colaboraciones es " + directorMasRepetido);
+			controller.printMessage("----------");
+			controller.printMessage("El promedio de votación de las peliculas en las que actua es de " + promedio/pelis.contarDatos());
+			controller.printMessage("El director con el qué se han hecho más colaboraciones es " + directorMasRepetido);
 		}
 		else {
-			System.out.println("----------");
-			System.out.println("La persona dada no ha actuado en ninguna pelicula");
+			controller.printMessage("----------");
+			controller.printMessage("La persona dada no ha actuado en ninguna pelicula");
 		}
 	}
 	
@@ -455,18 +489,18 @@ public class Modelo {
 			}
 		}
 		if (pelis.contarDatos()>0){
-			System.out.println("----------");
-			System.out.println("El director ha dirigido " + pelis.contarDatos()+ " peliculas.");
-			System.out.println("Las películas que ha dirigido son: ");
+			controller.printMessage("----------");
+			controller.printMessage("El director ha dirigido " + pelis.contarDatos()+ " peliculas.");
+			controller.printMessage("Las películas que ha dirigido son: ");
 			for(int i=0;i<pelis.contarDatos();i++) {
-				System.out.println(pelis.darElemento(i));	
+				controller.printMessage(pelis.darElemento(i));	
 			}
-			System.out.println("----------");
-			System.out.println("El promedio de votación de las peliculas en las que ha dirigido es de " + promedio/pelis.contarDatos());
+			controller.printMessage("----------");
+			controller.printMessage("El promedio de votación de las peliculas en las que ha dirigido es de " + promedio/pelis.contarDatos());
 		}
 		else {
-			System.out.println("----------");
-			System.out.println("La persona dada no ha dirigido ninguna pelicula");
+			controller.printMessage("----------");
+			controller.printMessage("La persona dada no ha dirigido ninguna pelicula");
 		}
 	}
 	
@@ -476,13 +510,13 @@ public class Modelo {
 		String archivo = "./data/SmallMoviesDetailsCleaned.csv";
 		String archivo2 = "./data/MoviesCastingRaw-small.csv";
 	    int paisProduccion = 9; 
-		System.out.println("Buscando peliculas de " + nombrePais);
+		controller.printMessage("Buscando peliculas de " + nombrePais);
 		boolean rta = false;
 		cargarHashTable(archivo, archivo2, paisProduccion, false, false);
 		Nodo nodoPelis = TablaHashSeparateChaining.getNodo(nombrePais);
 		while(nodoPelis!=null) {
 			if(nodoPelis.darInfo().equals(nombrePais)) {
-				System.out.println("");
+				controller.printMessage("");
 				((Pelicula) nodoPelis.darInfo()).darNombrePelicula();
 				rta= true;
 			}

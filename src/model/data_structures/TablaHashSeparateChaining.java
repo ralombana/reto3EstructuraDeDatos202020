@@ -128,7 +128,7 @@ public class TablaHashSeparateChaining<K , V> implements TablaSimbolos <K, V>
 					String productora = act.darProductora();
 					String año = act.darAño();
 					String llave = productora + "," + año; 
-					Hash key = new Hash(llave);
+					Hash key = new Hash(llave,1);
 					rta.agregarAlPrincipio((K) key);
 				}
 			}
