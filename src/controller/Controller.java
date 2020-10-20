@@ -1,5 +1,7 @@
 package controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 import clases.Pelicula;
@@ -21,7 +23,7 @@ public class Controller {
 	public Controller ()
 	{
 		view = new View();
-		modelo = new Modelo(this);
+		modelo = new Modelo();
 	}
 
 	public void run() 
@@ -35,54 +37,51 @@ public class Controller {
 				switch(option){
 
 				case 1:
-					view.printMessage("--------- \nCargar peliculas");
-					modelo = new Modelo(this);
-					modelo.cargarHashTable();
-					view.printMessage("--------- \nLista de peliculas cargada");					
+					view.printMessage("Cargando datos del archivo");	
+					modelo.loadAccidents();
 					break;
 
 				case 2:
-					modelo.cargarHashTable();
-					view.printMessage("--------- \nSe cargo la lista en formato Productoras");
-					view.printMessage("--------- \nEscriba el nombre de la casa productora que desea conocer");
+					view.printMessage("--------- \nEscriba la fecha a buscar con el formato AAAA-MM-DD");
 					lector.nextLine();
-					String pCasaProductora = lector.nextLine(); 
-					view.printMessage("La casa productora que desea conocer es "+pCasaProductora);
-					modelo.darPeliculasCasaProductora(pCasaProductora);
-					break;
-
-				case 3:
-
-					break;
-
-				case 4:
-					modelo.cargarHashTableActores();
-					view.printMessage("--------- \nSe cargo la lista en formato actores");
-					view.printMessage("--------- \nEscriba el nombre del actor que desea conocer");
-					lector.nextLine();
-					String nombreActor = lector.nextLine(); 
-					view.printMessage("El actor que quieres conocer es " + nombreActor );
-					modelo.darPeliculasActorHash(nombreActor);
-					break;
-				
-				case 5:
-					modelo.cargarHashTable();
-					view.printMessage("--------- \nSe cargo la lista en orden de lectura");
-					view.printMessage("--------- \nEscriba el genero que desea conocer");
-					String pGenero = lector.next(); 
-					view.printMessage("El genero que quieres conocer es "+pGenero);
-					modelo.darPeliculasGenero(pGenero);
-					break;
+					String fecha = lector.nextLine();
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					Date search = df.parse(fecha);
+					long startTime = System.currentTimeMillis();
+					int[] ans = modelo.SearchByDateRBT(search);
+					long endTime = System.currentTimeMillis();
+					long duration = endTime - startTime;
 					
-				case 6:
-					if(!modelo.darCarga()) {
-						view.printMessage("No hay peliculas cargadas");
-					}
-					else {
-							
-					}
-					break;
+					long startTime1 = System.currentTimeMillis();
+					int[] ans1 = modelo.SearchByDateBST(search);
+					long endTime1 = System.currentTimeMillis();
+					long duration1 = endTime - startTime;
 					
+					
+					if(ans[0] == 0)
+					{
+						view.printMessage("Fecha no encontrada, intente nuevamente");
+					}
+					else
+					{
+						view.printMessage("Accidentes encontrados por RBT: " + ans[0]);
+						
+						for(int i = 1; i < ans.length; i++)
+						{
+							view.printMessage("Accidentes de severidad " + (i) + " en RBT: " + ans[i]);
+						}
+						
+						System.out.println("Tiempo total de búsqueda RBT: " + duration + " milisegundos");
+						
+						view.printMessage("Accidentes encontrados por BST: " + ans1[0]);
+						
+						for(int i = 1; i < ans1.length; i++)
+						{
+							view.printMessage("Accidentes de severidad " + (i) + " en BST: " + ans1[i]);
+						}
+						System.out.println("Tiempo total de búsqueda BST: " + duration1 + " milisegundos");
+					}
+					break;				
 				default: 
 					view.printMessage("--------- \n Opcion Invalida !! \n---------");
 					break;
@@ -93,25 +92,6 @@ public class Controller {
 			view.printMessage("--------- \n Error!! \n---------");
 			e.printStackTrace();
 			run();
-		}
-	}
-	
-	public void ImprimirPelicula(Pelicula aImprimir) {
-		if (aImprimir != null) {
-			view.printMessage("----------");
-			view.printMessage("ID:"+aImprimir.darIdentificador());
-			view.printMessage("Nombre:"+aImprimir.darNombrePelicula());
-			view.printMessage("Votos:"+(int)aImprimir.darCantidadVotos());
-			view.printMessage("Promedio de Votacion:"+aImprimir.darVotosPromedio());
-			view.printMessage("Genero:"+aImprimir.darGenero());
-			view.printMessage("Actores:");
-			String[] actores = aImprimir.darListaNombresActores();
-			for (int i =0;i<5;i++) {
-				view.printMessage(actores[i]);
-			}
-		}
-		else {
-			view.printMessage("Ocurrio un errror, revise que el indice dado sea menor al tamaño de la lista");
 		}
 	}
 	
